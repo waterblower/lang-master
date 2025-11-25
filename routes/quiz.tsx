@@ -26,31 +26,43 @@ export default define.page(function QuizPage() {
               position: fixed;
               width: 100%;
               height: 100%;
+              height: 100vh;
+              height: 100dvh; /* Dynamic viewport height for mobile */
               touch-action: pan-y;
+              -webkit-overflow-scrolling: touch;
             }
             body {
               overscroll-behavior: none;
+            }
+            /* iOS Safari fixes */
+            @supports (-webkit-touch-callout: none) {
+              html, body {
+                height: -webkit-fill-available;
+              }
             }
           `}
                 </style>
             </Head>
 
-            <div class="h-screen w-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col">
-                {/* Fixed Navigation - Compact */}
+            <div
+                class="h-screen w-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col"
+                style="height: 100vh; height: 100dvh;"
+            >
+                {/* Fixed Navigation - Ultra Compact for mobile */}
                 <nav class="bg-white/90 backdrop-blur-md shadow-sm flex-shrink-0 border-b border-purple-100">
-                    <div class="px-3 sm:px-4">
-                        <div class="flex justify-between items-center h-12 sm:h-14">
+                    <div class="px-3">
+                        <div class="flex justify-between items-center h-11">
                             <a href="/" class="flex items-center gap-2">
-                                <div class="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
-                                    <span class="text-lg sm:text-xl">🇯🇵</span>
+                                <div class="w-7 h-7 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+                                    <span class="text-base">🇯🇵</span>
                                 </div>
-                                <span class="text-base sm:text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hidden xs:inline">
+                                <span class="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent hidden xs:inline">
                                     Lang Master
                                 </span>
                             </a>
                             <a
                                 href="/"
-                                class="text-gray-600 hover:text-purple-600 transition-colors font-medium text-sm sm:text-base"
+                                class="text-gray-600 hover:text-purple-600 transition-colors font-medium text-sm"
                             >
                                 ← 返回
                             </a>
@@ -58,9 +70,12 @@ export default define.page(function QuizPage() {
                     </div>
                 </nav>
 
-                {/* Quiz Content - Scrollable Container */}
-                <div class="flex-1 overflow-y-auto overscroll-contain">
-                    <div class="h-full flex flex-col px-3 sm:px-4 py-4 sm:py-6">
+                {/* Quiz Content - Scrollable Container with safe area */}
+                <div
+                    class="flex-1 overflow-y-auto overscroll-contain"
+                    style="min-height: 0;"
+                >
+                    <div class="h-full flex flex-col px-3 py-3 pb-safe">
                         <QuizGame questions={quizQuestions} />
                     </div>
                 </div>

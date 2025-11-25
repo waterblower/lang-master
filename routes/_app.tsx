@@ -11,11 +11,36 @@ export default define.page(function App({ Component }) {
                     content="width=device-width, initial-scale=1.0"
                 />
                 <meta name="theme-color" content="#a855f7" />
+
+                {/* PWA Manifest */}
+                <link rel="manifest" href={asset("/static/manifest.json")} />
+
+                {/* iOS PWA Support - Full Screen */}
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta
                     name="apple-mobile-web-app-status-bar-style"
-                    content="default"
+                    content="black-translucent"
                 />
+                <meta name="apple-mobile-web-app-title" content="Lang Master" />
+
+                {/* iOS Icons */}
+                <link
+                    rel="apple-touch-icon"
+                    href={asset("/icons/icon-192x192.png")}
+                />
+                <link
+                    rel="apple-touch-icon"
+                    sizes="192x192"
+                    href={asset("/icons/icon-192x192.png")}
+                />
+                <link
+                    rel="apple-touch-icon"
+                    sizes="512x512"
+                    href={asset("/icons/icon-512x512.png")}
+                />
+
+                {/* Prevent iOS Safari UI elements */}
+                <meta name="mobile-web-app-capable" content="yes" />
 
                 {/* Open Graph / Social Media */}
                 <meta property="og:type" content="website" />

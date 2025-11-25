@@ -128,42 +128,42 @@ export default function QuizGame({ questions }: QuizGameProps) {
     // Instructions Screen
     if (showInstructions.value) {
         return (
-            <div class="h-full flex items-center justify-center">
-                <div class="w-full max-w-lg mx-auto bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 border border-purple-100">
-                    <div class="text-center mb-6">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                            <span class="text-4xl sm:text-5xl">🇯🇵</span>
+            <div class="min-h-full flex items-center justify-center py-4 overflow-y-auto">
+                <div class="w-full max-w-lg mx-auto bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 border border-purple-100 my-auto">
+                    <div class="text-center mb-4">
+                        <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                            <span class="text-3xl">🇯🇵</span>
                         </div>
-                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+                        <h2 class="text-xl font-bold text-gray-800 mb-1">
                             日语N5测验
                         </h2>
-                        <p class="text-sm sm:text-base text-gray-600">
+                        <p class="text-sm text-gray-600">
                             JLPT N5 练习测试
                         </p>
                     </div>
 
-                    <div class="space-y-3 mb-6">
-                        <div class="flex items-start gap-3 bg-purple-50 rounded-xl p-3">
-                            <div class="flex-shrink-0 w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center  text-sm font-bold">
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-start gap-2 bg-purple-50 rounded-xl p-2.5">
+                            <div class="flex-shrink-0 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
                                 10
                             </div>
-                            <p class="text-sm text-gray-700 pt-0.5">
+                            <p class="text-xs text-gray-700 pt-0.5">
                                 随机题目，涵盖词汇、语法、汉字和阅读
                             </p>
                         </div>
-                        <div class="flex items-start gap-3 bg-pink-50 rounded-xl p-3">
-                            <div class="flex-shrink-0 w-6 h-6 bg-pink-500 rounded-full flex items-center justify-center  text-sm font-bold">
-                                70%
+                        <div class="flex items-start gap-2 bg-pink-50 rounded-xl p-2.5">
+                            <div class="flex-shrink-0 w-5 h-5 bg-pink-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                70
                             </div>
-                            <p class="text-sm text-gray-700 pt-0.5">
+                            <p class="text-xs text-gray-700 pt-0.5">
                                 及格分数线（10题中答对7题）
                             </p>
                         </div>
-                        <div class="flex items-start gap-3 bg-blue-50 rounded-xl p-3">
-                            <div class="flex-shrink-0 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center  text-sm font-bold">
+                        <div class="flex items-start gap-2 bg-blue-50 rounded-xl p-2.5">
+                            <div class="flex-shrink-0 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
                                 ✓
                             </div>
-                            <p class="text-sm text-gray-700 pt-0.5">
+                            <p class="text-xs text-gray-700 pt-0.5">
                                 每题都有详细解释，帮助您学习
                             </p>
                         </div>
@@ -172,7 +172,7 @@ export default function QuizGame({ questions }: QuizGameProps) {
                     <button
                         type="button"
                         onClick={handleStartQuiz}
-                        class="w-full px-6 py-4 bg-gradient-to-r from-purple-600 to-pink-600  text-lg font-bold rounded-xl shadow-lg active:scale-95 transition-transform"
+                        class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-base font-bold rounded-xl shadow-lg active:scale-95 transition-transform"
                     >
                         开始测验 🚀
                     </button>
@@ -187,72 +187,72 @@ export default function QuizGame({ questions }: QuizGameProps) {
         const isPassed = percentage >= 70;
 
         return (
-            <div class="h-full flex items-center justify-center overflow-y-auto">
-                <div class="w-full max-w-lg mx-auto bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 border border-purple-100">
+            <div class="min-h-full flex items-center justify-center overflow-y-auto py-4">
+                <div class="w-full max-w-lg mx-auto bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-4 border border-purple-100 my-auto">
                     <div class="text-center">
                         <div
-                            class={`inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full mb-4 ${
+                            class={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-3 ${
                                 isPassed
                                     ? "bg-gradient-to-br from-green-400 to-emerald-500 shadow-lg shadow-green-200"
                                     : "bg-gradient-to-br from-orange-400 to-amber-500 shadow-lg shadow-orange-200"
                             }`}
                         >
-                            <span class="text-5xl sm:text-6xl">
+                            <span class="text-4xl">
                                 {isPassed ? "🎉" : "📚"}
                             </span>
                         </div>
 
-                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+                        <h2 class="text-xl font-bold text-gray-800 mb-1">
                             {isPassed ? "恭喜你！" : "继续加油！"}
                         </h2>
-                        <p class="text-base sm:text-lg text-gray-600 mb-6">
+                        <p class="text-sm text-gray-600 mb-4">
                             {isPassed
                                 ? "おめでとうございます！"
                                 : "もう少し練習しましょう！"}
                         </p>
 
-                        <div class="bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50 rounded-2xl p-6 mb-6">
-                            <div class="text-5xl sm:text-6xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent mb-2">
+                        <div class="bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50 rounded-2xl p-4 mb-4">
+                            <div class="text-4xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent mb-1">
                                 {score.value}/{questions.length}
                             </div>
 
-                            <div class="text-2xl sm:text-3xl font-bold text-gray-700 mb-4">
+                            <div class="text-xl font-bold text-gray-700 mb-3">
                                 {percentage}% 正确率
                             </div>
 
-                            <div class="grid grid-cols-3 gap-2 sm:gap-3">
-                                <div class="bg-white/90 rounded-xl p-3">
-                                    <div class="text-xs text-gray-600 mb-1">
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="bg-white/90 rounded-xl p-2">
+                                    <div class="text-xs text-gray-600 mb-0.5">
                                         正确
                                     </div>
-                                    <div class="text-2xl font-bold text-green-600">
+                                    <div class="text-xl font-bold text-green-600">
                                         {score.value}
                                     </div>
                                 </div>
-                                <div class="bg-white/90 rounded-xl p-3">
-                                    <div class="text-xs text-gray-600 mb-1">
+                                <div class="bg-white/90 rounded-xl p-2">
+                                    <div class="text-xs text-gray-600 mb-0.5">
                                         错误
                                     </div>
-                                    <div class="text-2xl font-bold text-red-600">
+                                    <div class="text-xl font-bold text-red-600">
                                         {questions.length - score.value}
                                     </div>
                                 </div>
-                                <div class="bg-white/90 rounded-xl p-3">
-                                    <div class="text-xs text-gray-600 mb-1">
+                                <div class="bg-white/90 rounded-xl p-2">
+                                    <div class="text-xs text-gray-600 mb-0.5">
                                         及格
                                     </div>
-                                    <div class="text-2xl font-bold text-orange-600">
+                                    <div class="text-xl font-bold text-orange-600">
                                         {Math.ceil(questions.length * 0.7)}
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="flex flex-col gap-3">
+                        <div class="flex flex-col gap-2">
                             <button
                                 type="button"
                                 onClick={handleRestartQuiz}
-                                class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600  text-base font-bold rounded-xl shadow-lg active:scale-95 transition-transform"
+                                class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-base font-bold rounded-xl shadow-lg active:scale-95 transition-transform"
                             >
                                 🔄 再试一次
                             </button>
@@ -277,16 +277,16 @@ export default function QuizGame({ questions }: QuizGameProps) {
     return (
         <div class="h-full flex flex-col">
             {/* Progress Bar */}
-            <div class="mb-3 sm:mb-4 flex-shrink-0">
+            <div class="mb-2 flex-shrink-0">
                 <div class="flex justify-between items-center mb-2">
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm font-bold text-gray-700">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-xs font-bold text-gray-700">
                             {currentQuestionIndex.value + 1}/{questions.length}
                         </span>
                     </div>
-                    <div class="flex items-center gap-2 bg-white/90 px-3 py-1.5 rounded-full shadow-sm">
+                    <div class="flex items-center gap-1.5 bg-white/90 px-2.5 py-1 rounded-full shadow-sm">
                         <span class="text-xs text-gray-600">得分:</span>
-                        <span class="text-sm font-bold text-purple-600">
+                        <span class="text-xs font-bold text-purple-600">
                             {score.value}/{answeredQuestions.value.length}
                         </span>
                     </div>
@@ -301,25 +301,27 @@ export default function QuizGame({ questions }: QuizGameProps) {
 
             {/* Quiz Card - Scrollable */}
             <div class="flex-1 bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-purple-100 flex flex-col overflow-hidden">
-                <div class="flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6">
+                <div
+                    class="flex-1 overflow-y-auto overscroll-contain p-3"
+                    style="-webkit-overflow-scrolling: touch;"
+                >
                     {/* Question Type Badge */}
-                    <div class="mb-4 flex-shrink-0">
+                    <div class="mb-3 flex-shrink-0">
                         <div
-                            class={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full  font-bold text-xs sm:text-sm shadow-m
-d ${typeConfig.bg}`}
+                            class={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-white font-bold text-xs shadow-md ${typeConfig.bg}`}
                         >
-                            <span class="text-base">{typeConfig.emoji}</span>
+                            <span class="text-sm">{typeConfig.emoji}</span>
                             <span>{typeConfig.name}</span>
                         </div>
                     </div>
 
                     {/* Question */}
-                    <h2 class="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6 leading-relaxed whitespace-pre-line flex-shrink-0">
+                    <h2 class="text-base font-bold text-gray-800 mb-3 leading-relaxed whitespace-pre-line flex-shrink-0">
                         {currentQuestion.value.question}
                     </h2>
 
                     {/* Answer Options */}
-                    <div class="space-y-2 sm:space-y-3 mb-4 flex-shrink-0">
+                    <div class="space-y-2 mb-3 flex-shrink-0">
                         {currentQuestion.value.options.map((option, index) => (
                             <button
                                 key={index}
@@ -330,7 +332,7 @@ d ${typeConfig.bg}`}
                             >
                                 <div class="flex items-center gap-3">
                                     <div
-                                        class={`flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-lg font-bold text-sm transition-all ${
+                                        class={`flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-lg font-bold text-xs transition-all ${
                                             selectedAnswer.value === index &&
                                                 !showExplanation.value
                                                 ? "bg-gradient-to-br from-purple-500 to-pink-500  shadow-md"
@@ -349,7 +351,7 @@ d ${typeConfig.bg}`}
                                     >
                                         {String.fromCharCode(65 + index)}
                                     </div>
-                                    <span class="text-sm sm:text-base font-medium text-gray-800 flex-1">
+                                    <span class="text-sm font-medium text-gray-800 flex-1">
                                         {option}
                                     </span>
                                     {showExplanation.value &&
@@ -357,7 +359,7 @@ d ${typeConfig.bg}`}
                                             currentQuestion.value
                                                 .correctAnswer &&
                                         (
-                                            <span class="text-xl flex-shrink-0">
+                                            <span class="text-base flex-shrink-0">
                                                 ✓
                                             </span>
                                         )}
@@ -367,7 +369,7 @@ d ${typeConfig.bg}`}
                                             currentQuestion.value
                                                 .correctAnswer &&
                                         (
-                                            <span class="text-xl flex-shrink-0">
+                                            <span class="text-base flex-shrink-0">
                                                 ✗
                                             </span>
                                         )}
@@ -380,16 +382,16 @@ d ${typeConfig.bg}`}
                     {showExplanation.value &&
                         currentQuestion.value.explanation && (
                         <div
-                            class={`p-4 rounded-xl border-l-4 flex-shrink-0 ${
+                            class={`p-3 rounded-xl border-l-4 flex-shrink-0 ${
                                 selectedAnswer.value ===
                                         currentQuestion.value.correctAnswer
                                     ? "bg-gradient-to-r from-green-50 to-emerald-50 border-green-500"
                                     : "bg-gradient-to-r from-red-50 to-pink-50 border-red-500"
                             }`}
                         >
-                            <div class="flex items-start gap-3">
+                            <div class="flex items-start gap-2">
                                 <div
-                                    class={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${
+                                    class={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
                                         selectedAnswer.value ===
                                                 currentQuestion.value
                                                     .correctAnswer
@@ -397,7 +399,7 @@ d ${typeConfig.bg}`}
                                             : "bg-gradient-to-br from-red-500 to-pink-500"
                                     }`}
                                 >
-                                    <span class="text-2xl">
+                                    <span class="text-xl">
                                         {selectedAnswer.value ===
                                                 currentQuestion.value
                                                     .correctAnswer
@@ -406,14 +408,14 @@ d ${typeConfig.bg}`}
                                     </span>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="font-bold text-base text-gray-800 mb-1">
+                                    <p class="font-bold text-sm text-gray-800 mb-0.5">
                                         {selectedAnswer.value ===
                                                 currentQuestion.value
                                                     .correctAnswer
                                             ? "正确！"
                                             : "错误"}
                                     </p>
-                                    <p class="text-sm text-gray-700 leading-relaxed break-words">
+                                    <p class="text-xs text-gray-700 leading-relaxed break-words">
                                         {currentQuestion.value.explanation}
                                     </p>
                                 </div>
@@ -423,17 +425,17 @@ d ${typeConfig.bg}`}
                 </div>
 
                 {/* Action Buttons - Fixed at bottom */}
-                <div class="p-4 border-t border-gray-100 flex-shrink-0 bg-white/50">
+                <div class="p-3 border-t border-gray-100 flex-shrink-0 bg-white/50">
                     {!showExplanation.value
                         ? (
                             <button
                                 type="button"
                                 onClick={handleSubmitAnswer}
                                 disabled={selectedAnswer.value === null}
-                                class={`w-full px-6 py-3 text-base font-bold rounded-xl shadow-lg transition-all ${
+                                class={`w-full px-6 py-2.5 text-sm font-bold rounded-xl shadow-lg transition-all ${
                                     selectedAnswer.value === null
                                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                        : "bg-gradient-to-r from-purple-600 to-pink-600 active:scale-95"
+                                        : "bg-gradient-to-r from-purple-600 to-pink-600 text-white active:scale-95"
                                 }`}
                             >
                                 提交答案 →
@@ -443,7 +445,7 @@ d ${typeConfig.bg}`}
                             <button
                                 type="button"
                                 onClick={handleNextQuestion}
-                                class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-base font-bold rounded-xl shadow-lg active:scale-95 transition-all"
+                                class="w-full px-6 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-sm font-bold rounded-xl shadow-lg active:scale-95 transition-all"
                             >
                                 {currentQuestionIndex.value <
                                         questions.length - 1
