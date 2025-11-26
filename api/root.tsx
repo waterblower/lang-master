@@ -1,5 +1,5 @@
 import { define } from "../utils.ts";
-import { getRandomQuestions } from "../utils/quizData.ts";
+import { getRandomQuestions, WrongAnswerSchema } from "../utils/quizData.ts";
 
 export const handler = define.handlers({
     GET(ctx) {
@@ -25,18 +25,29 @@ const t = initTRPC.create();
 export const router = t.router;
 export const publicProcedure = t.procedure;
 
-import * as z from "zod";
+import { createClient } from "@libsql/client";
 
-const kv = await Deno.openKv();
+const db_url = Deno.env.get("db_url");
+if (!db_url) throw new Error("db_url not in env");
+
+export const db = createClient({
+    url: db_url,
+    authToken: Deno.env.get("db_token"),
+});
 
 export const appRouter = router({
     get_quizes: publicProcedure
         .query(async () => {
             return getRandomQuestions();
         }),
-    answer_quiz: publicProcedure
-        .input(z.object({ id: z.string(), answer: z.boolean() }))
+    record_wrong_answer: publicProcedure
+        .input(WrongAnswerSchema)
         .mutation(async ({ input }) => {
+            console.log(input);
+            await db.execute(
+                `INSERT INTO wrong_answers (id, quiz_id, your_answer, created_at) VALUES (:id, :quiz_id, :your_answer, :created_at)`,
+                input,
+            );
         }),
 });
 export type tRPC_Router = typeof appRouter;

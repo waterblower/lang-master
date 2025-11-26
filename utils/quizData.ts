@@ -1,13 +1,25 @@
 // Japanese N5 Level Quiz Data
 
-export type Quiz = {
-    id: string;
-    type: "vocabulary" | "grammar" | "reading" | "kanji";
-    question: string;
-    options: string[];
-    correctAnswer: number;
-    explanation?: string;
-};
+import zod from "zod";
+
+export const WrongAnswerSchema = zod.object({
+    id: zod.ulid(),
+    quiz_id: zod.string(),
+    your_answer: zod.number().min(0),
+    created_at: zod.iso.datetime(),
+});
+
+const QuizSchema = zod.object({
+    id: zod.ulid(),
+    type: zod.enum(["vocabulary", "grammar", "reading", "kanji"]),
+    level: zod.enum(["N5", "N4", "N3", "N2", "N1"]).optional(),
+    question: zod.string(),
+    options: zod.array(zod.string()),
+    answer: zod.number().min(0).max(3),
+    explanation: zod.string(),
+});
+
+export type Quiz = zod.infer<typeof QuizSchema>;
 
 const questions: Quiz[] = [
     {
@@ -15,7 +27,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「山」の読み方はどれですか。",
         "options": ["かわ", "やま", "うみ", "そら"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation":
             "「山」读作「やま」。其他选项：かわ(河)、うみ(海)、そら(空)。",
     },
@@ -24,7 +36,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「先生」の読み方はどれですか。",
         "options": ["がくせい", "せんせい", "せんしゅう", "ぜんぜん"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「先生」读作「せんせい」。",
     },
     {
@@ -32,7 +44,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「日本」の読み方はどれですか。",
         "options": ["にほん", "にっぽん", "ひのもと", "AとB"],
-        "correctAnswer": 3,
+        "answer": 3,
         "explanation":
             "「日本」可以读作「にほん」也可以读作「にっぽん」，所以选 A和B。",
     },
@@ -41,7 +53,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「今日」は３月１日です。",
         "options": ["きのう", "あした", "きょう", "あさって"],
-        "correctAnswer": 2,
+        "answer": 2,
         "explanation": "「今日」读作「きょう」。",
     },
     {
@@ -49,7 +61,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「新しい」の読み方はどれですか。",
         "options": ["うつくしい", "たのしい", "あたらしい", "すずしい"],
-        "correctAnswer": 2,
+        "answer": 2,
         "explanation": "「新しい」读作「あたらしい」(新的)。",
     },
     {
@@ -57,7 +69,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「食べる」の読み方はどれですか。",
         "options": ["のめる", "たべる", "ねる", "みる"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「食べる」读作「たべる」(吃)。",
     },
     {
@@ -70,7 +82,7 @@ const questions: Quiz[] = [
             "いちせんえん",
             "じゅうまんえん",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "「一万」读作「いちまん」。",
     },
     {
@@ -78,7 +90,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「火曜日」の読み方はどれですか。",
         "options": ["どようび", "かようび", "すいようび", "きんようび"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「火曜日」读作「かようび」(周二)。",
     },
     {
@@ -86,7 +98,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「右」の読み方はどれですか。",
         "options": ["うえ", "した", "ひだり", "みぎ"],
-        "correctAnswer": 3,
+        "answer": 3,
         "explanation": "「右」读作「みぎ」。ひだり是左。",
     },
     {
@@ -94,7 +106,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「元気」の読み方はどれですか。",
         "options": ["てんき", "びょうき", "げんき", "ほんき"],
-        "correctAnswer": 2,
+        "answer": 2,
         "explanation": "「元気」读作「げんき」(精神/健康)。",
     },
     {
@@ -102,7 +114,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「雨」の読み方はどれですか。",
         "options": ["あめ", "ゆき", "くもり", "はれ"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "「雨」读作「あめ」。",
     },
     {
@@ -110,7 +122,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「電車」の読み方はどれですか。",
         "options": ["じてんしゃ", "でんしゃ", "くるま", "しんかんせん"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「電車」读作「でんしゃ」。",
     },
     {
@@ -118,7 +130,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「聞く」の読み方はどれですか。",
         "options": ["かく", "きく", "あるく", "はたらく"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「聞く」读作「きく」(听/问)。",
     },
     {
@@ -126,7 +138,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「時間」の読み方はどれですか。",
         "options": ["しんぶん", "じかん", "じしょ", "じこく"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「時間」读作「じかん」。",
     },
     {
@@ -134,7 +146,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「白い」の読み方はどれですか。",
         "options": ["くろい", "あかい", "しろい", "あおい"],
-        "correctAnswer": 2,
+        "answer": 2,
         "explanation": "「白い」读作「しろい」。",
     },
     {
@@ -142,7 +154,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「名前」の読み方はどれですか。",
         "options": ["なまえ", "めいし", "ゆうめい", "みょうじ"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "「名前」读作「なまえ」。",
     },
     {
@@ -150,7 +162,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「魚」の読み方はどれですか。",
         "options": ["にく", "さかな", "やさい", "たまご"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「魚」读作「さかな」。",
     },
     {
@@ -158,7 +170,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「入口」の読み方はどれですか。",
         "options": ["でぐち", "いりぐち", "ひがしぐち", "にしぐち"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「入口」读作「いりぐち」。",
     },
     {
@@ -166,7 +178,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「高い」の読み方はどれですか。",
         "options": ["やすい", "ながい", "たかい", "ひくい"],
-        "correctAnswer": 2,
+        "answer": 2,
         "explanation": "「高い」读作「たかい」(高/贵)。",
     },
     {
@@ -174,7 +186,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「半分」の読み方はどれですか。",
         "options": ["はんふん", "はんぶん", "ほんぶん", "じゅうぶん"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「半分」读作「はんぶん」。发生浊音化。",
     },
     {
@@ -182,7 +194,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「来月」の読み方はどれですか。",
         "options": ["せんげつ", "こんげつ", "らいげつ", "まいつき"],
-        "correctAnswer": 2,
+        "answer": 2,
         "explanation": "「来月」读作「らいげつ」。",
     },
     {
@@ -190,7 +202,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「少し」の読み方はどれですか。",
         "options": ["すこし", "すくない", "ちいさい", "たくさん"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "「少し」读作「すこし」(稍微/一点)。",
     },
     {
@@ -198,7 +210,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「会社」の読み方はどれですか。",
         "options": ["かいしゃ", "しゃかい", "こうこう", "こうえん"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "「会社」读作「かいしゃ」。",
     },
     {
@@ -206,7 +218,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「男の子」の読み方はどれですか。",
         "options": ["おんなのこ", "おとこのこ", "おとな", "こども"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「男の子」读作「おとこのこ」。",
     },
     {
@@ -214,7 +226,7 @@ const questions: Quiz[] = [
         "type": "kanji",
         "question": "「手」の読み方はどれですか。",
         "options": ["め", "て", "みみ", "あし"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「手」读作「て」。",
     },
     {
@@ -227,7 +239,7 @@ const questions: Quiz[] = [
             "こんばんは",
             "おやすみなさい",
         ],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "早上见面应该说「おはようございます」。",
     },
     {
@@ -240,7 +252,7 @@ const questions: Quiz[] = [
             "いってきます",
             "ただいま",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "吃饭前说「いただきます」(我开动了)。",
     },
     {
@@ -248,7 +260,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "父の姉は、私のおばさんです。父の兄は？",
         "options": ["おじさん", "おじいさん", "おとうと", "お兄さん"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "爸爸的哥哥是伯父/叔叔，日语是「おじさん」。注意与「おじいさん」(爷爷)区分。",
     },
@@ -257,7 +269,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "「椅子」の意味はなんですか。",
         "options": ["桌子", "椅子", "书本", "窗户"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「椅子（いす）」的意思是椅子。",
     },
     {
@@ -265,7 +277,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "「猫」はなんと鳴きますか。",
         "options": ["ワンワン", "ニャーニャー", "モーモー", "コケコッコー"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "猫的叫声是「ニャーニャー」。",
     },
     {
@@ -273,7 +285,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "夏はとても＿＿＿です。",
         "options": ["さむい", "あつい", "すずしい", "つめたい"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "夏天很「あつい」(热)。",
     },
     {
@@ -281,7 +293,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "部屋が暗いです。電気を＿＿＿ください。",
         "options": ["つけて", "けして", "あけて", "しめて"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "打开电灯用「つけます」。",
     },
     {
@@ -289,7 +301,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "デパートで靴を＿＿＿。",
         "options": ["かいました", "ききました", "かきました", "いきました"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "在百货商店「かいました」(买了)鞋子。",
     },
     {
@@ -297,7 +309,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "図書館で本を＿＿＿。",
         "options": ["借ります", "貸します", "買います", "売ります"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "在图书馆是「借ります」(借入)。",
     },
     {
@@ -305,7 +317,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "「冷蔵庫」の中に何がありますか。",
         "options": ["ふく", "のみもの", "くつ", "ほん"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "冰箱（冷蔵庫）里通常有「のみもの」(饮料)。",
     },
     {
@@ -313,7 +325,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "毎日お風呂に＿＿＿。",
         "options": ["入ります", "行きます", "来ます", "出ます"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "洗澡/泡澡的固定搭配是「お風呂に入ります」。",
     },
     {
@@ -321,7 +333,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "「誕生日」の意味はなんですか。",
         "options": ["结婚纪念日", "生日", "节日", "星期日"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「誕生日（たんじょうび）」是生日。",
     },
     {
@@ -329,7 +341,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "風邪をひいたので、病院で＿＿＿をもらいました。",
         "options": ["くすり", "おかし", "ジュース", "はな"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "感冒了在医院拿了「くすり」(药)。",
     },
     {
@@ -337,7 +349,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "カレーは＿＿＿食べ物です。",
         "options": ["あまい", "からい", "にがい", "すっぱい"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "咖喱是「からい」(辣的)食物。",
     },
     {
@@ -345,7 +357,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "「眼鏡」を＿＿＿。",
         "options": ["かけます", "はきます", "かぶります", "きます"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "戴眼镜用「かけます」。鞋是「はきます」，帽子是「かぶります」，衣服是「きます」。",
     },
@@ -354,7 +366,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "宿題が終わったので、テレビを＿＿＿。",
         "options": ["見ました", "読みました", "書きました", "聞きました"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "看电视用「見ました」。",
     },
     {
@@ -362,7 +374,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "私の趣味は音楽を＿＿＿ことです。",
         "options": ["聞く", "聞こえる", "聞ける", "聞いた"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "听音乐是「音楽を聞く」。",
     },
     {
@@ -370,7 +382,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "昨日は日曜日でした。今日は＿＿＿です。",
         "options": ["土曜日", "金曜日", "月曜日", "火曜日"],
-        "correctAnswer": 2,
+        "answer": 2,
         "explanation": "昨天是周日，今天就是「月曜日」(周一)。",
     },
     {
@@ -378,7 +390,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "1年は12＿＿＿です。",
         "options": ["時間", "ヶ月", "週間", "回"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "一年有12个「ヶ月」(月)。",
     },
     {
@@ -386,7 +398,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "駅までタクシーで＿＿＿。",
         "options": ["行きました", "歩きました", "走りました", "飛びました"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "坐出租车去车站是「行きました」。",
     },
     {
@@ -394,7 +406,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "「仕事」の意味はなんですか。",
         "options": ["作业", "工作", "事情", "事故"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "「仕事（しごと）」是工作。",
     },
     {
@@ -402,7 +414,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "この部屋はとても＿＿＿です。掃除しましょう。",
         "options": ["きれい", "汚い", "広い", "明るい"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "因为说要打扫，所以房间是「汚い（きたない）」(脏的)。",
     },
     {
@@ -410,7 +422,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "日本語が＿＿＿わかりません。",
         "options": ["よく", "全然", "たくさん", "いつも"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "后文是否定「わかりません」，所以搭配「全然」(完全不)。",
     },
     {
@@ -418,7 +430,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "お腹が＿＿＿。",
         "options": ["すきました", "いっぱいです", "痛いです", "全部"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "「お腹がすきました」表示肚子饿了。",
     },
     {
@@ -426,7 +438,7 @@ const questions: Quiz[] = [
         "type": "vocabulary",
         "question": "あの店はいつも客が＿＿＿です。",
         "options": ["多い", "大きい", "長い", "重い"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "形容客人数量多用「多い（おおい）」。",
     },
     {
@@ -434,7 +446,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "私は毎日コーヒー＿＿＿飲みます。",
         "options": ["を", "が", "に", "で"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "他动词「飲む」的宾语用助词「を」。",
     },
     {
@@ -442,7 +454,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "図書館＿＿＿勉強します。",
         "options": ["に", "で", "を", "へ"],
-        "correctAnswer": 1,
+        "answer": 1,
         "explanation": "动作进行的场所用助词「で」。",
     },
     {
@@ -450,7 +462,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "日曜日＿＿＿どこへも行きませんでした。",
         "options": ["は", "が", "を", "の"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "表示强调或者话题时用「は」，否定句中常用「は」提示时间。",
     },
@@ -459,7 +471,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "机の上に本＿＿＿あります。",
         "options": ["が", "を", "で", "に"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "表示存在的主语（无生命物体）用「が」...あります。",
     },
     {
@@ -467,7 +479,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "あそこに犬＿＿＿います。",
         "options": ["が", "を", "で", "に"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "表示存在的主语（有生命物体）用「が」...います。",
     },
     {
@@ -475,7 +487,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "私は日本料理＿＿＿好きです。",
         "options": ["が", "を", "で", "に"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "表示好恶的对象用「が」...好きです。",
     },
     {
@@ -483,7 +495,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "東京へ何＿＿＿行きますか。",
         "options": ["で", "に", "を", "が"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "表示交通手段用「で」。",
     },
     {
@@ -491,7 +503,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "田中さんは今、手紙を＿＿＿います。",
         "options": ["書いて", "書き", "書く", "書いた"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "正在进行时：动词て形 + います。",
     },
     {
@@ -499,7 +511,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "昨日は雨＿＿＿。",
         "options": ["でした", "です", "だ", "ではありません"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "过去肯定：名词 + でした。",
     },
     {
@@ -512,7 +524,7 @@ const questions: Quiz[] = [
             "面白くないです",
             "面白かったです",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "「あまり」后接否定形式。礼貌体否定是「くありません」。",
     },
     {
@@ -520,7 +532,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "一緒に映画を＿＿＿。",
         "options": ["見ませんか", "見ますか", "見ましょうか", "見ません"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "邀请别人一起做某事常用否定疑问句「～ませんか」。",
     },
     {
@@ -528,7 +540,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "ここに車を＿＿＿ください。",
         "options": ["止めないで", "止めなくて", "止めるな", "止めません"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "请不要做某事：动词ない形 + で + ください。",
     },
     {
@@ -536,7 +548,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "私は日本語を話すこと＿＿＿できます。",
         "options": ["が", "を", "で", "に"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "表示能力：～ことができます。",
     },
     {
@@ -544,7 +556,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "昨日、デパートへ買い物＿＿＿行きました。",
         "options": ["に", "へ", "で", "を"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "表示移动的目的：动词词干/名词 + に + 行きます。",
     },
     {
@@ -552,7 +564,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "「ごめんください」は＿＿＿時に言います。",
         "options": ["人の家に行く", "寝る", "ご飯を食べる", "別れる"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "去别人家玄关叫门时说「ごめんください」。修饰名词「時」用动词原形。",
     },
@@ -561,7 +573,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "あの人は背が＿＿＿、髪が長いです。",
         "options": ["高くて", "高い", "高かった", "高くない"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "形容词并列连接用「て形」。高い -> 高くて。",
     },
     {
@@ -569,7 +581,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "私の部屋は兄の部屋＿＿＿広いです。",
         "options": ["より", "ほど", "まで", "から"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "比较级：A は B より... (A比B...)。",
     },
     {
@@ -577,7 +589,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "教室に学生が＿＿＿いますか。",
         "options": ["何人", "いくつ", "誰", "どれ"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "询问人数用「何人（なんにん）」。",
     },
     {
@@ -585,7 +597,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "机の上にりんごが三＿＿＿あります。",
         "options": ["つ", "枚", "本", "匹"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "数苹果等立体物品通常用通用量词「つ」。三つ（みっつ）。",
     },
     {
@@ -593,7 +605,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "切手を３＿＿＿買いました。",
         "options": ["枚", "台", "個", "本"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "数扁平物体（如邮票）用「枚（まい）」。",
     },
     {
@@ -601,7 +613,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "この料理は＿＿＿美味しいです。",
         "options": ["とても", "あまり", "全然", "たぶん"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "修饰肯定形容词表示程度高用「とても」。",
     },
     {
@@ -609,7 +621,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "テストは＿＿＿簡単でした。",
         "options": ["思ったより", "思ったほど", "思うと", "思って"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "比想象中...「思ったより」。",
     },
     {
@@ -617,7 +629,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "写真を＿＿＿もいいですか。",
         "options": ["撮って", "撮り", "撮る", "撮った"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "表示许可：动词て形 + もいいですか。",
     },
     {
@@ -625,7 +637,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "危ないですから、ここで＿＿＿ください。",
         "options": ["遊ばないで", "遊んで", "遊びます", "遊ぶ"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "因为危险，所以请不要玩：否定命令（请求）「ないでください」。",
     },
@@ -634,7 +646,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "私は将来、医者に＿＿＿たいです。",
         "options": ["なり", "なる", "なって", "な"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "想成为...：名词 + に + なりたい。",
     },
     {
@@ -642,7 +654,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "夏休みに沖縄へ＿＿＿ことがありますか。",
         "options": ["行った", "行く", "行って", "行かない"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "表示经历：动词た形 + ことがありますか。",
     },
     {
@@ -650,7 +662,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "宿題を＿＿＿から、遊びに行きます。",
         "options": ["して", "した", "する", "します"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "动作的先后顺序：动词て形 + から (做完...之后)。",
     },
     {
@@ -658,7 +670,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "この漢字は＿＿＿読みますか。",
         "options": ["どう", "どんな", "どれ", "どの"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "询问方式方法用「どう」。",
     },
     {
@@ -666,7 +678,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "田中さんは、歌が＿＿＿ですね。",
         "options": ["上手", "得意", "良い", "好き"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "称赞别人唱歌好听通常用「上手（じょうず）」。",
     },
     {
@@ -674,7 +686,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "駅までバスで10分＿＿＿かかります。",
         "options": ["ぐらい", "ごろ", "など", "まで"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "表示大概的时间段长度用「ぐらい」。",
     },
     {
@@ -682,7 +694,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "毎朝7時に＿＿＿。",
         "options": ["起きます", "寝ます", "行きます", "来ます"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "早上7点应该是「起きます」(起床)。",
     },
     {
@@ -690,7 +702,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "昨日は風邪で学校を＿＿＿。",
         "options": ["休みました", "休んでいます", "休みます", "休む"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "昨天的事情用过去式「休みました」。",
     },
     {
@@ -698,7 +710,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "これは誰の傘ですか。「それは＿＿＿です。」",
         "options": ["佐藤さんの", "佐藤さん", "佐藤さんは", "佐藤さんに"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "那是佐藤先生的（伞）。名词+の 表示所属，省略了后面的名词。",
     },
@@ -707,7 +719,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "弟は部屋でゲームを＿＿＿います。",
         "options": ["して", "した", "する", "します"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "正在玩游戏：して + います。",
     },
     {
@@ -715,7 +727,7 @@ const questions: Quiz[] = [
         "type": "grammar",
         "question": "もっとゆっくり＿＿＿ください。",
         "options": ["話して", "話した", "話す", "話せ"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "请说慢一点：动词て形 + ください。",
     },
     {
@@ -728,7 +740,7 @@ const questions: Quiz[] = [
             "いただきます",
             "いってらっしゃい",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "回答谢谢通常说「いいえ、どういたしまして」(不客气)。",
     },
     {
@@ -741,7 +753,7 @@ const questions: Quiz[] = [
             "ただいま",
             "ごちそうさま",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "家人出门说「いってきます」，在家的人回答「いってらっしゃい」(慢走)。",
     },
@@ -755,7 +767,7 @@ const questions: Quiz[] = [
             "いただきます",
             "こんにちは",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "回家说「ただいま」，在家的人回答「おかえりなさい」(欢迎回来)。",
     },
@@ -770,7 +782,7 @@ const questions: Quiz[] = [
             "穿蓝衬衫戴眼镜的人",
             "穿白衬衫的人",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "原文说：穿着蓝色衬衫(青いシャツ)，没戴眼镜(眼鏡をかけていません)。",
     },
@@ -779,7 +791,7 @@ const questions: Quiz[] = [
         "type": "reading",
         "question": "「このバスは駅へ行きますか。」「いいえ、＿＿＿。」",
         "options": ["行きません", "行きます", "行きました", "行ってください"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "回答「いいえ」(不) 后接否定形式「行きません」。",
     },
     {
@@ -788,7 +800,7 @@ const questions: Quiz[] = [
         "question":
             "テストは8時から10時までです。今は9時です。テストはあと＿＿＿です。",
         "options": ["1時間", "2時間", "30分", "終わりました"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "考试8点到10点，现在9点，所以还有1小时(1時間)。",
     },
     {
@@ -801,7 +813,7 @@ const questions: Quiz[] = [
             "まあまあです",
             "好きです",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "回答「いいえ」意味着否定，形容词否定为「面白くありません」。",
     },
@@ -815,7 +827,7 @@ const questions: Quiz[] = [
             "デパートへ行ってください",
             "デパートへ行きません",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "问句是过去时「しましたか」，回答也必须是过去时「行きました」。",
     },
@@ -824,7 +836,7 @@ const questions: Quiz[] = [
         "type": "reading",
         "question": "私の父は40歳です。母は38歳です。母は父より＿＿＿です。",
         "options": ["若い", "古い", "高い", "大きい"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "爸爸40岁，妈妈38岁，所以妈妈比爸爸「若い」(年轻)。",
     },
     {
@@ -832,7 +844,7 @@ const questions: Quiz[] = [
         "type": "reading",
         "question": "A:「これは何ですか。」 B:「それは日本の＿＿＿です。」",
         "options": ["お菓子", "食べる", "美味しい", "甘い"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "「の」后面接名词，且回答「是什么」，所以选名词「お菓子」(点心)。",
     },
@@ -841,7 +853,7 @@ const questions: Quiz[] = [
         "type": "reading",
         "question": "A:「トイレはどこですか。」 B:「＿＿＿です。」",
         "options": ["あそこ", "どれ", "だれ", "いつ"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "询问地点「どこ」，回答用指示地点的代词「あそこ」(那里)。",
     },
@@ -851,7 +863,7 @@ const questions: Quiz[] = [
         "question":
             "A:「山田さんはいますか。」 B:「いいえ、山田さんはもう＿＿＿。」",
         "options": ["帰りました", "帰ります", "います", "来ます"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "「もう」(已经)通常搭配过去式，表示已经回去了。",
     },
     {
@@ -859,7 +871,7 @@ const questions: Quiz[] = [
         "type": "reading",
         "question": "A:「コーヒーはいかがですか。」 B:「いいえ、＿＿＿。」",
         "options": ["けっこうです", "ください", "飲みます", "好きです"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "委婉拒绝别人的提议（再来一杯咖啡）用「いいえ、けっこうです」(不用了/够了)。",
     },
@@ -873,7 +885,7 @@ const questions: Quiz[] = [
             "食べました",
             "食べています",
         ],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation":
             "「でも」(但是)表示转折。平时吃，但今早没吃。「今朝」是过去时间，用过去否定。",
     },
@@ -882,7 +894,7 @@ const questions: Quiz[] = [
         "type": "reading",
         "question": "A:「誕生日はいつですか。」 B:「＿＿＿です。」",
         "options": ["5月5日", "東京", "20歳", "学生"],
-        "correctAnswer": 0,
+        "answer": 0,
         "explanation": "问「いつ」(什么时候)，回答日期。",
     },
 ];

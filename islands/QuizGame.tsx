@@ -1,6 +1,6 @@
 import { useComputed, useSignal } from "@preact/signals";
 import type { Quiz } from "../utils/quizData.ts";
-import QuizCard from "./QuizCard.tsx";
+import QuizCardV2 from "./QuizCardV2.tsx";
 
 interface QuizGameProps {
     questions: Quiz[];
@@ -35,7 +35,7 @@ export default function QuizGame({ questions }: QuizGameProps) {
         if (selectedAnswer.value === null) return;
 
         const isCorrect = selectedAnswer.value ===
-            currentQuestion.value.correctAnswer;
+            currentQuestion.value.answer;
 
         if (isCorrect) {
             score.value += 1;
@@ -163,21 +163,7 @@ export default function QuizGame({ questions }: QuizGameProps) {
     }
 
     // Quiz Screen
-    return (
-        <QuizCard
-            currentQuestion={currentQuestion.value}
-            currentQuestionIndex={currentQuestionIndex.value}
-            totalQuestions={questions.length}
-            selectedAnswer={selectedAnswer.value}
-            showExplanation={showExplanation.value}
-            score={score.value}
-            answeredQuestions={answeredQuestions.value.length}
-            progress={progress.value}
-            onAnswerSelect={handleAnswerSelect}
-            onSubmitAnswer={handleSubmitAnswer}
-            onNextQuestion={handleNextQuestion}
-        />
-    );
+    return <QuizCardV2 data={currentQuestion.value}></QuizCardV2>;
 }
 
 function InstructionCard({ startQuiz }: { startQuiz: () => void }) {
