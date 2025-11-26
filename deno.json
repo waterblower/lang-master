@@ -18,6 +18,7 @@
     "imports": {
         "@/": "./",
         "@libsql/client": "npm:@libsql/client@^0.15.15",
+        "@libsql/linux-x64-gnu": "npm:@libsql/linux-x64-gnu@^0.5.22",
         "@std/ulid": "jsr:@std/ulid@^1.0.0",
         "@trpc/client": "npm:@trpc/client@^11.7.2",
         "@trpc/server": "npm:@trpc/server@^11.7.2",
