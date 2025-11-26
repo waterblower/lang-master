@@ -1,6 +1,8 @@
 import { useComputed, useSignal } from "@preact/signals";
 import type { Quiz } from "../utils/quizData.ts";
 import QuizCardV2 from "./QuizCardV2.tsx";
+import { api } from "../client.ts";
+import { ulid } from "@std/ulid";
 
 interface QuizGameProps {
     questions: Quiz[];
@@ -14,48 +16,12 @@ export default function QuizGame({ questions }: QuizGameProps) {
     const showExplanation = useSignal(false);
     const game_state = useSignal<"start" | "playing" | "completed">("start");
 
-    const currentQuestion = useComputed(
+    const currentQuiz = useComputed(
         () => questions[currentQuestionIndex.value],
-    );
-
-    const progress = useComputed(
-        () => ((currentQuestionIndex.value + 1) / questions.length) * 100,
     );
 
     const handleStartQuiz = () => {
         game_state.value = "playing";
-    };
-
-    const handleAnswerSelect = (answerIndex: number) => {
-        if (showExplanation.value) return;
-        selectedAnswer.value = answerIndex;
-    };
-
-    const handleSubmitAnswer = () => {
-        if (selectedAnswer.value === null) return;
-
-        const isCorrect = selectedAnswer.value ===
-            currentQuestion.value.answer;
-
-        if (isCorrect) {
-            score.value += 1;
-        }
-
-        answeredQuestions.value = [
-            ...answeredQuestions.value,
-            currentQuestionIndex.value,
-        ];
-        showExplanation.value = true;
-    };
-
-    const handleNextQuestion = () => {
-        if (currentQuestionIndex.value < questions.length - 1) {
-            currentQuestionIndex.value += 1;
-            selectedAnswer.value = null;
-            showExplanation.value = false;
-        } else {
-            game_state.value = "completed";
-        }
     };
 
     const handleRestartQuiz = () => {
@@ -163,7 +129,21 @@ export default function QuizGame({ questions }: QuizGameProps) {
     }
 
     // Quiz Screen
-    return <QuizCardV2 data={currentQuestion.value}></QuizCardV2>;
+    return (
+        <QuizCardV2
+            data={currentQuiz.value}
+            handleOptionClick={async (selectedOption: number) => {
+                if (selectedOption != currentQuiz.value.answer) {
+                    await api.record_wrong_answer.mutate({
+                        id: ulid(),
+                        quiz_id: currentQuiz.value.id,
+                        your_answer: selectedOption,
+                        created_at: new Date().toISOString(),
+                    });
+                }
+            }}
+        />
+    );
 }
 
 function InstructionCard({ startQuiz }: { startQuiz: () => void }) {

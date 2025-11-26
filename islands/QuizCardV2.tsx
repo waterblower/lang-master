@@ -6,45 +6,20 @@ import { ulid } from "@std/ulid";
 
 interface QuizCardProps {
     data: Quiz;
-    onNext?: () => void;
     className?: string;
+    handleOptionClick: (index: number) => Promise<void>;
 }
 
 const QuizCard = (
-    { data, onNext, className = "" }: QuizCardProps,
+    { data, handleOptionClick, className = "" }: QuizCardProps,
 ) => {
     // Signals for local state management
     const selectedOption = useSignal<number | null>(null);
-    const isSubmitted = useSignal<boolean>(false);
 
     // Computed state for UI logic
     const isCorrect = useComputed(() => {
         return selectedOption.value === data.answer;
     });
-
-    // Reset state when the question ID changes (recycling the component)
-    useEffect(() => {
-        selectedOption.value = null;
-        isSubmitted.value = false;
-    }, [data.id]);
-
-    const handleOptionClick = async (index: number) => {
-        if (isSubmitted.value) return;
-
-        selectedOption.value = index;
-        isSubmitted.value = true;
-
-        if (selectedOption.value != data.answer) {
-            await api.record_wrong_answer.mutate({
-                id: ulid(),
-                quiz_id: data.id,
-                your_answer: index,
-                created_at: new Date().toISOString(),
-            });
-        }
-
-        console.log(index);
-    };
 
     // Helper for badge colors
     const getTypeColor = (type: string) => {
@@ -117,7 +92,10 @@ const QuizCard = (
                         return (
                             <button
                                 key={index}
-                                onClick={() => handleOptionClick(index)}
+                                onClick={() => {
+                                    selectedOption.value = index;
+                                    handleOptionClick(index);
+                                }}
                                 disabled={isSubmitted.value}
                                 className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-center justify-between group ${buttonStyle}`}
                             >
