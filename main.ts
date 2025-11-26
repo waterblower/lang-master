@@ -1,5 +1,7 @@
 import { App, staticFiles } from "fresh";
 import { define, type State } from "./utils.ts";
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import { appRouter } from "./api/root.tsx";
 
 export const app = new App<State>();
 
@@ -28,3 +30,15 @@ app.use(exampleLoggerMiddleware);
 
 // Include file-system based routes here
 app.fsRoutes();
+
+app.all("/api/*", async (ctx) => {
+    return await fetchRequestHandler({
+        endpoint: "/api",
+        req: ctx.req,
+        router: appRouter,
+        createContext: () => ({}), // Add this
+        onError: ({ path, error, input }) => {
+            console.error(path, input, error);
+        },
+    });
+});

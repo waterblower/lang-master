@@ -1,6 +1,6 @@
 // Japanese N5 Level Quiz Data
 
-export type QuizQuestion = {
+export type Quiz = {
     id: string;
     type: "vocabulary" | "grammar" | "reading" | "kanji";
     question: string;
@@ -9,7 +9,7 @@ export type QuizQuestion = {
     explanation?: string;
 };
 
-const questions: QuizQuestion[] = [
+const questions: Quiz[] = [
     {
         "id": "kanji_001",
         "type": "kanji",
@@ -888,16 +888,16 @@ const questions: QuizQuestion[] = [
 ];
 
 // Function to get random questions
-export function getRandomQuestions(count: number = 10): QuizQuestion[] {
+export function getRandomQuestions(count: number = 10): Quiz[] {
     const shuffled = [...questions].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, Math.min(count, shuffled.length));
 }
 
 // Function to get questions by type
 export function getQuestionsByType(
-    type: QuizQuestion["type"],
+    type: Quiz["type"],
     count?: number,
-): QuizQuestion[] {
+): Quiz[] {
     const filtered = questions.filter((q) => q.type === type);
     if (count) {
         return filtered.slice(0, count);

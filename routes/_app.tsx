@@ -1,5 +1,5 @@
 import { define } from "../utils.ts";
-import { asset } from "fresh/runtime";
+import { asset, Partial } from "fresh/runtime";
 
 export default define.page(function App({ Component }) {
     return (
@@ -8,7 +8,7 @@ export default define.page(function App({ Component }) {
                 <meta charset="utf-8" />
                 <meta
                     name="viewport"
-                    content="width=device-width, initial-scale=1.0"
+                    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
                 />
                 <meta name="theme-color" content="#a855f7" />
 
@@ -19,9 +19,9 @@ export default define.page(function App({ Component }) {
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta
                     name="apple-mobile-web-app-status-bar-style"
-                    content="black-translucent"
+                    content="black"
                 />
-                <meta name="apple-mobile-web-app-title" content="Lang Master" />
+                <meta name="apple-mobile-web-app-title" content="外语邪修" />
 
                 {/* iOS Icons */}
                 <link
@@ -44,10 +44,10 @@ export default define.page(function App({ Component }) {
 
                 {/* Open Graph / Social Media */}
                 <meta property="og:type" content="website" />
-                <meta property="og:site_name" content="Lang Master" />
+                <meta property="og:site_name" content="外语邪修" />
                 <meta
                     property="og:title"
-                    content="Lang Master - Master Japanese Language"
+                    content="外语邪修 - Master Japanese Language"
                 />
                 <meta
                     property="og:description"
@@ -58,29 +58,40 @@ export default define.page(function App({ Component }) {
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta
                     name="twitter:title"
-                    content="Lang Master - Master Japanese Language"
+                    content="外语邪修 - Master Japanese Language"
                 />
                 <meta
                     name="twitter:description"
                     content="Learn Japanese through interactive JLPT N5 quizzes covering vocabulary, grammar, kanji, and reading comprehension."
                 />
 
-                <title>Lang Master - Master Japanese Language</title>
+                <title>外语邪修 - Master Japanese Language</title>
                 <link rel="icon" href={asset("/favicon.ico")} />
                 <link rel="stylesheet" href={asset("/styles.css")} />
+
+                {/* iOS Safe Area for Dynamic Island */}
+                <style>
+                    {`
+                        :root {
+                            /* Respect safe areas for Dynamic Island and notch */
+                            padding-top: env(safe-area-inset-top);
+                            padding-bottom: env(safe-area-inset-bottom);
+                            padding-left: env(safe-area-inset-left);
+                            padding-right: env(safe-area-inset-right);
+                        }
+
+                        body {
+                            /* Prevent content from appearing under Dynamic Island */
+                            padding-top: env(safe-area-inset-top);
+                            padding-bottom: env(safe-area-inset-bottom);
+                        }
+                    `}
+                </style>
             </head>
-            <body class="preload">
-                <Component />
-                <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
-              // Remove preload class after page load to enable transitions
-              window.addEventListener('load', () => {
-                document.body.classList.remove('preload');
-              });
-            `,
-                    }}
-                />
+            <body f-client-nav class="preload">
+                <Partial name="body">
+                    <Component />
+                </Partial>
             </body>
         </html>
     );

@@ -1,4 +1,4 @@
-# 🇯🇵 Lang Master
+# 🇯🇵 外语邪修
 
 A beautiful, modern Japanese language learning application built with Fresh,
 Preact, and Signals. Master JLPT N5 level Japanese through interactive quizzes
