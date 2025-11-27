@@ -18,7 +18,13 @@ export default function NavBar({ currentPath = "/" }: NavBarProps) {
     const navLinks = [
         { href: "/", label: "首页", icon: "🏠", description: "Home" },
         { href: "/quiz", label: "测验", icon: "📝", description: "Quiz" },
-        { href: "/lessons", label: "课程", icon: "📚", description: "Lessons" },
+        {
+            href: "/wronganswers",
+            label: "错题集",
+            icon: "📚",
+            description: "Wrong Answers",
+        },
+        { href: "/lessons", label: "课程", icon: "📖", description: "Lessons" },
         {
             href: "/vocabulary",
             label: "词汇",
