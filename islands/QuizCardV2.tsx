@@ -1,7 +1,7 @@
 import { useComputed, useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import { Quiz } from "../utils/quizData.ts";
-import { api } from "../client.ts";
+import { api } from "../trpc-client.ts";
 import { ulid } from "@std/ulid";
 
 interface QuizCardProps {
