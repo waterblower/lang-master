@@ -11,7 +11,7 @@ export const WrongAnswerSchema = zod.object({
 
 export type WrongAnswer = zod.infer<typeof WrongAnswerSchema>;
 
-const QuizSchema = zod.object({
+export const QuizSchema = zod.object({
     id: zod.ulid(),
     type: zod.enum(["vocabulary", "grammar", "reading", "kanji"]),
     level: zod.enum(["N5", "N4", "N3", "N2", "N1"]).optional(),
@@ -23,7 +23,7 @@ const QuizSchema = zod.object({
 
 export type Quiz = zod.infer<typeof QuizSchema>;
 
-const questions: Quiz[] = [
+export const questions: Quiz[] = [
     {
         "id": "kanji_001",
         "type": "kanji",
