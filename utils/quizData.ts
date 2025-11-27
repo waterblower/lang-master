@@ -9,6 +9,8 @@ export const WrongAnswerSchema = zod.object({
     created_at: zod.iso.datetime(),
 });
 
+export type WrongAnswer = zod.infer<typeof WrongAnswerSchema>;
+
 const QuizSchema = zod.object({
     id: zod.ulid(),
     type: zod.enum(["vocabulary", "grammar", "reading", "kanji"]),

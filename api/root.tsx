@@ -1,5 +1,9 @@
 import { define } from "../utils.ts";
-import { getRandomQuestions, WrongAnswerSchema } from "../utils/quizData.ts";
+import {
+    getRandomQuestions,
+    WrongAnswer,
+    WrongAnswerSchema,
+} from "../utils/quizData.ts";
 
 export const handler = define.handlers({
     GET(ctx) {
@@ -43,11 +47,15 @@ export const appRouter = router({
     record_wrong_answer: publicProcedure
         .input(WrongAnswerSchema)
         .mutation(async ({ input }) => {
-            console.log(input);
-            await db.execute(
-                `INSERT INTO wrong_answers (id, quiz_id, your_answer, created_at) VALUES (:id, :quiz_id, :your_answer, :created_at)`,
-                input,
-            );
+            await record_wrong_answer(input);
         }),
 });
+
+export async function record_wrong_answer(input: WrongAnswer) {
+    await db.execute(
+        `INSERT INTO wrong_answers (id, quiz_id, your_answer, created_at) VALUES (:id, :quiz_id, :your_answer, :created_at)`,
+        input,
+    );
+}
+
 export type tRPC_Router = typeof appRouter;
