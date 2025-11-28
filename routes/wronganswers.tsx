@@ -73,13 +73,16 @@ export default define.page(async function WrongAnswersPage() {
 
             <div
                 class="min-h-screen w-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col"
-                style="padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);"
+                style="padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); height: 100vh; max-height: -webkit-fill-available;"
             >
                 {/* Navigation Bar */}
                 <NavBar currentPath="/wronganswers" />
 
                 {/* Main Content */}
-                <div class="flex-1 overflow-y-auto">
+                <div
+                    class="flex-1 overflow-y-auto"
+                    style="-webkit-overflow-scrolling: touch; position: relative;"
+                >
                     <div class="max-w-4xl mx-auto px-4 py-6 pb-safe">
                         {/* Header */}
                         <div class="mb-6">
