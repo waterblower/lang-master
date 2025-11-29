@@ -39,60 +39,27 @@ export function QuizCard({ quiz }: QuizCardProps) {
                 {/* Options */}
                 <div class="space-y-2 mb-4">
                     {quiz.options.map((option, index) => {
-                        const isCorrect = index === quiz.answer;
-
                         return (
                             <div
                                 key={index}
-                                class={`px-4 py-3 rounded-xl border-2 transition-all ${
-                                    isCorrect
-                                        ? "bg-green-50 border-green-500"
-                                        : "bg-gray-50 border-gray-200"
-                                }`}
+                                class={`px-4 py-3 rounded-xl border-2 transition-all hover:bg-green-50 hover:border-green-500
+                                bg-gray-50 border-gray-200 hover:cursor-pointer`}
                             >
                                 <div class="flex items-center gap-3">
                                     <span
-                                        class={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold ${
-                                            isCorrect
-                                                ? "bg-green-500 text-white"
-                                                : "bg-gray-300 text-gray-700"
-                                        }`}
+                                        class={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold bg-green-500 text-white`}
                                     >
                                         {optionLabels[index]}
                                     </span>
                                     <span
-                                        class={`flex-1 ${
-                                            isCorrect ? "font-semibold" : ""
-                                        }`}
+                                        class={`flex-1`}
                                     >
                                         {option}
                                     </span>
-                                    {isCorrect && (
-                                        <span class="text-green-600 text-sm font-semibold">
-                                            ✓ 正确答案
-                                        </span>
-                                    )}
                                 </div>
                             </div>
                         );
                     })}
-                </div>
-
-                {/* Explanation */}
-                <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-xl">
-                    <div class="flex items-start gap-2">
-                        <span class="text-blue-600 font-semibold text-sm mt-0.5">
-                            💡
-                        </span>
-                        <div>
-                            <p class="text-sm font-semibold text-blue-900 mb-1">
-                                解析
-                            </p>
-                            <p class="text-sm text-blue-800">
-                                {quiz.explanation}
-                            </p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
