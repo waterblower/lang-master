@@ -32,6 +32,7 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 
 import { createClient } from "@libsql/client";
+import { z } from "zod";
 
 const db_url = Deno.env.get("db_url");
 if (!db_url) throw new Error("db_url not in env");
@@ -43,8 +44,11 @@ export const db = createClient({
 
 export const appRouter = router({
     get_quizes: publicProcedure
-        .query(async () => {
-            return getRandomQuestions();
+        .input(z.object({
+            count: z.number().min(0).max(100),
+        }))
+        .query(async (args) => {
+            return get_random_quiz(args.input.count);
         }),
     record_wrong_answer: publicProcedure
         .input(WrongAnswerSchema)
@@ -67,25 +71,42 @@ export async function record_wrong_answer(input: WrongAnswer) {
 
 export async function save_quiz(input: Quiz) {
     await db.execute(
-        `INSERT INTO quiz (id, type, level, question, options, correct_answer, explanation)
-         VALUES (:id, :type, :level, :question, :options, :correct_answer, :explanation)
+        `INSERT INTO quizzes (id, type, level, question, options, answer, explanation)
+         VALUES (:id, :type, :level, :question, :options, :answer, :explanation)
          ON CONFLICT(id) DO UPDATE SET
             type = :type,
             level = :level,
             question = :question,
             options = :options,
-            correct_answer = :correct_answer,
+            answer = :answer,
             explanation = :explanation`,
         {
-            id: input.id,
-            type: input.type,
-            level: input.level ?? null,
-            question: input.question,
+            ...input,
             options: JSON.stringify(input.options),
-            correct_answer: input.answer,
-            explanation: input.explanation,
+            level: input.level ?? null,
         },
     );
+}
+
+export async function get_random_quiz(count: number): Promise<Quiz[] | Error> {
+    const result = await db.execute(
+        `SELECT *
+         FROM quiz
+         ORDER BY RANDOM()
+         LIMIT ?`,
+        [count],
+    );
+
+    const quizzes = [];
+    for (const row of result.rows) {
+        console.log(row);
+        const quiz = QuizSchema.safeParse(row);
+        if (!quiz.success) {
+            return quiz.error;
+        }
+        quizzes.push(quiz.data);
+    }
+    return quizzes;
 }
 
 export type tRPC_Router = typeof appRouter;

@@ -1,12 +1,17 @@
 import { Head } from "fresh/runtime";
 import { define } from "../utils.ts";
-import { getRandomQuestions } from "../utils/quizData.ts";
+import { ErrorView } from "../components/ErrorView.tsx";
 
 import NavBar from "../islands/NavBar.tsx";
+import { get_random_quiz } from "../api/root.tsx";
 
 export default define.page(async function QuizPage() {
     // SSR: Generate questions on the server
-    const quizQuestions = getRandomQuestions(10);
+    const quizQuestions = await get_random_quiz(10);
+    if (quizQuestions instanceof Error) {
+        console.error(quizQuestions);
+        return ErrorView(quizQuestions);
+    }
 
     return (
         <>

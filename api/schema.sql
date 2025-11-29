@@ -1,15 +1,15 @@
-CREATE TABLE quiz (
+CREATE TABLE quizzes (
     id TEXT PRIMARY KEY,
     type TEXT NOT NULL,
     level TEXT,
     question TEXT NOT NULL,
     options TEXT NOT NULL,
-    correct_answer INTEGER NOT NULL,
+    answer INTEGER NOT NULL,
     explanation TEXT NOT NULL
 );
 
-CREATE INDEX idx_quiz_type ON quiz(type);
-CREATE INDEX idx_quiz_level ON quiz(level);
+CREATE INDEX idx_quizzes_type ON quizzes(type);
+CREATE INDEX idx_quizzes_level ON quizzes(level);
 
 CREATE TABLE IF NOT exists wrong_answers (
     id TEXT PRIMARY KEY,
