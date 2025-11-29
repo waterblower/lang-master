@@ -40,9 +40,10 @@ export function QuizCard({ quiz }: QuizCardProps) {
                 <div class="space-y-2 mb-4">
                     {quiz.options.map((option, index) => {
                         return (
-                            <div
+                            <button
                                 key={index}
-                                class={`px-4 py-3 rounded-xl border-2 transition-all hover:bg-green-50      active:bg-green-50 bg-gray-50
+                                class={`flex w-full
+                                  px-4 py-3 rounded-xl border-2 transition-all hover:bg-green-50      active:bg-green-50 bg-gray-50
                                 hover:border-green-500 border-gray-200
                                 hover:cursor-pointer
                                 touch-manipulation`}
@@ -59,7 +60,7 @@ export function QuizCard({ quiz }: QuizCardProps) {
                                         {option}
                                     </span>
                                 </div>
-                            </div>
+                            </button>
                         );
                     })}
                 </div>
