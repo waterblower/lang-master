@@ -1,7 +1,7 @@
 import { define } from "../utils.ts";
 import {
-    getRandomQuestions,
     Quiz,
+    QuizDatabaseSchema,
     QuizSchema,
     WrongAnswer,
     WrongAnswerSchema,
@@ -91,7 +91,7 @@ export async function save_quiz(input: Quiz) {
 export async function get_random_quiz(count: number): Promise<Quiz[] | Error> {
     const result = await db.execute(
         `SELECT *
-         FROM quiz
+         FROM quizzes
          ORDER BY RANDOM()
          LIMIT ?`,
         [count],
@@ -100,7 +100,7 @@ export async function get_random_quiz(count: number): Promise<Quiz[] | Error> {
     const quizzes = [];
     for (const row of result.rows) {
         console.log(row);
-        const quiz = QuizSchema.safeParse(row);
+        const quiz = QuizDatabaseSchema.safeParse(row);
         if (!quiz.success) {
             return quiz.error;
         }

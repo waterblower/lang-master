@@ -13,7 +13,7 @@ export default define.page(function App({ Component }) {
                 <meta name="theme-color" content="#a855f7" />
 
                 {/* PWA Manifest */}
-                <link rel="manifest" href={asset("/static/manifest.json")} />
+                <link rel="manifest" href={asset("/manifest.json")} />
 
                 {/* iOS PWA Support - Full Screen */}
                 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -67,7 +67,6 @@ export default define.page(function App({ Component }) {
 
                 <title>外语邪修 - Master Japanese Language</title>
                 <link rel="icon" href={asset("/favicon.ico")} />
-                <link rel="stylesheet" href={asset("/styles.css")} />
 
                 {/* iOS Safe Area for Dynamic Island */}
                 <style>

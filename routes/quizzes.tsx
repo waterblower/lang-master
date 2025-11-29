@@ -25,36 +25,10 @@ export default define.page(async function QuizPage() {
                     name="viewport"
                     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
                 />
-                <style>
-                    {`
-            html, body {
-              overflow: hidden;
-              position: fixed;
-              width: 100%;
-              height: 100%;
-              height: 100vh;
-              height: 100dvh; /* Dynamic viewport height for mobile */
-              touch-action: pan-y;
-              -webkit-overflow-scrolling: touch;
-            }
-            body {
-              overscroll-behavior: none;
-              /* Prevent content from appearing under Dynamic Island */
-              padding-top: env(safe-area-inset-top);
-              padding-bottom: env(safe-area-inset-bottom);
-            }
-            /* iOS Safari fixes */
-            @supports (-webkit-touch-callout: none) {
-              html, body {
-                height: -webkit-fill-available;
-              }
-            }
-          `}
-                </style>
             </Head>
 
             <div
-                class="h-screen w-screen overflow-hidden bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col"
+                class="h-screen w-screen overflow-hidden bg-linear-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col"
                 style="height: 100vh; height: 100dvh; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);"
             >
                 {/* Navigation Bar */}

@@ -25,10 +25,10 @@ export default define.page(async function WrongAnswersPage() {
             q.level as q_level,
             q.question as q_question,
             q.options as q_options,
-            q.correct_answer as q_correct_answer,
+            q.answer as q_answer,
             q.explanation as q_explanation
         FROM wrong_answers wa
-        LEFT JOIN quiz q ON wa.quiz_id = q.id
+        LEFT JOIN quizzes q ON wa.quiz_id = q.id
         ORDER BY wa.created_at DESC
         LIMIT 100
     `);
@@ -42,7 +42,7 @@ export default define.page(async function WrongAnswersPage() {
                     level: row.q_level as string | undefined,
                     question: row.q_question as string,
                     options: JSON.parse(row.q_options as string) as string[],
-                    answer: row.q_correct_answer as number,
+                    answer: row.q_answer as number,
                     explanation: row.q_explanation as string,
                 }
                 : null;
@@ -289,7 +289,7 @@ function WrongAnswerCard(
                 : (
                     <div class="px-5 py-4">
                         <p class="text-gray-500 text-sm">
-                            题目数据不可用 (ID: {wrongAnswer
+                            未找到题目数据 (ID: {wrongAnswer
                                 .quiz_id})
                         </p>
                     </div>

@@ -1,3 +1,3 @@
-import Quiz from "./quiz.tsx";
+import Quiz from "./quizzes.tsx";
 
 export default Quiz;
