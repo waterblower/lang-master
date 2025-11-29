@@ -42,8 +42,9 @@ export function QuizCard({ quiz }: QuizCardProps) {
                         return (
                             <div
                                 key={index}
-                                class={`px-4 py-3 rounded-xl border-2 transition-all hover:bg-green-50 hover:border-green-500
-                                bg-gray-50 border-gray-200 hover:cursor-pointer`}
+                                class={`px-4 py-3 rounded-xl border-2 transition-all hover:bg-green-50      active:bg-green-50 bg-gray-50
+                                hover:border-green-500 border-gray-200
+                                hover:cursor-pointer`}
                             >
                                 <div class="flex items-center gap-3">
                                     <span
