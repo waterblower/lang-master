@@ -1,10 +1,10 @@
 import { define } from "../utils.ts";
 import {
     Quiz,
+    QuizAttempt,
+    QuizAttemptSchema,
     QuizDatabaseSchema,
     QuizSchema,
-    WrongAnswer,
-    WrongAnswerSchema,
 } from "../utils/quizData.ts";
 
 export const handler = define.handlers({
@@ -51,7 +51,7 @@ export const appRouter = router({
             return get_random_quiz(args.input.count);
         }),
     record_wrong_answer: publicProcedure
-        .input(WrongAnswerSchema)
+        .input(QuizAttemptSchema)
         .mutation(async ({ input }) => {
             await record_wrong_answer(input);
         }),
@@ -62,7 +62,7 @@ export const appRouter = router({
         }),
 });
 
-export async function record_wrong_answer(input: WrongAnswer) {
+export async function record_wrong_answer(input: QuizAttempt) {
     await db.execute(
         `INSERT INTO wrong_answers (id, quiz_id, your_answer, created_at) VALUES (:id, :quiz_id, :your_answer, :created_at)`,
         input,

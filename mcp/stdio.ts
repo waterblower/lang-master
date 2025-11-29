@@ -3,7 +3,7 @@ import {
     ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { WrongAnswerSchema } from "../utils/quizData.ts";
+import { QuizAttemptSchema } from "../utils/quizData.ts";
 import { record_wrong_answer } from "../api/root.tsx";
 
 // Create an MCP server
@@ -17,7 +17,7 @@ server.registerTool(
     {
         title: "record_wrong_answer",
         description: "record_wrong_answer",
-        inputSchema: WrongAnswerSchema,
+        inputSchema: QuizAttemptSchema,
     },
     async (input) => {
         await record_wrong_answer(input);

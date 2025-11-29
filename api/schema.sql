@@ -11,11 +11,11 @@ CREATE TABLE quizzes (
 CREATE INDEX idx_quizzes_type ON quizzes(type);
 CREATE INDEX idx_quizzes_level ON quizzes(level);
 
-CREATE TABLE IF NOT exists wrong_answers (
+CREATE TABLE IF NOT exists quiz_attempts (
     id TEXT PRIMARY KEY,
     quiz_id TEXT NOT NULL,
-    your_answer INTEGER NOT NULL CHECK (your_answer >= 0),
+    user_choice INTEGER NOT NULL CHECK (user_choice >= 0),
     created_at TEXT NOT NULL
 );
-CREATE INDEX IF NOT exists idx_wrong_answers_quiz_id ON wrong_answers(quiz_id);
-CREATE INDEX IF NOT exists idx_wrong_answers_created_at ON wrong_answers(created_at);
+CREATE INDEX IF NOT exists idx_quiz_attempts_quiz_id ON quiz_attempts(quiz_id);
+CREATE INDEX IF NOT exists idx_quiz_attempts_created_at ON quiz_attempts(created_at);

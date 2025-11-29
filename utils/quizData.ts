@@ -1,14 +1,14 @@
 // Japanese N5 Level Quiz Data
 import zod from "zod";
 
-export const WrongAnswerSchema = zod.object({
+export const QuizAttemptSchema = zod.object({
     id: zod.ulid(),
     quiz_id: zod.string(),
     your_answer: zod.number().min(0),
     created_at: zod.iso.datetime(),
 });
 
-export type WrongAnswer = zod.infer<typeof WrongAnswerSchema>;
+export type QuizAttempt = zod.infer<typeof QuizAttemptSchema>;
 
 // Schema for Quiz objects in memory (with options as array)
 export const QuizSchema = zod.object({

@@ -5,7 +5,6 @@ import { db } from "../api/root.tsx";
 import { WrongAnswerCard } from "../components/QuizCard.tsx";
 
 export default define.page(async function WrongAnswersPage() {
-    // SSR: Fetch wrong answers from database
     const wrongAnswersResult = await db.execute(`
         SELECT
             wa.id,
@@ -25,7 +24,7 @@ export default define.page(async function WrongAnswersPage() {
         LIMIT 100
     `);
     console.log(wrongAnswersResult.rows);
-    const wrongAnswers: WrongAnswerWithQuiz[] = wrongAnswersResult.rows.map(
+    const wrongAnswers = wrongAnswersResult.rows.map(
         (row) => {
             const quiz = row.q_id
                 ? {
@@ -111,9 +110,10 @@ export default define.page(async function WrongAnswersPage() {
                             )
                             : (
                                 <div class="space-y-4">
-                                    {wrongAnswers.map((wrongAnswer) => (
+                                    {wrongAnswers.map((attempt) => (
                                         <WrongAnswerCard
-                                            wrongAnswer={wrongAnswer}
+                                            attempt={attempt}
+                                            quiz={quiz}
                                         />
                                     ))}
                                 </div>

@@ -1,12 +1,11 @@
-import { Signal, useSignal } from "@preact/signals";
-import type { Quiz } from "../utils/quizData.ts";
+import type { Quiz, QuizAttempt } from "../utils/quizData.ts";
 
 export interface QuizCardProps {
     quiz: Quiz;
-    user_answer: Signal<number | undefined>;
+    onSelect: (index: number) => void;
 }
 
-export function QuizCardNormal({ quiz, user_answer }: QuizCardProps) {
+export function QuizCardNormal({ quiz, onSelect }: QuizCardProps) {
     const optionLabels = ["A", "B", "C", "D"];
 
     return (
@@ -34,7 +33,7 @@ export function QuizCardNormal({ quiz, user_answer }: QuizCardProps) {
                                 hover:cursor-pointer
                                 touch-manipulation`}
                                 onClick={() => {
-                                    user_answer.value = index;
+                                    onSelect(index);
                                 }}
                             >
                                 <div class="flex items-center gap-3">
@@ -145,11 +144,7 @@ function CardHeader({ quiz }: { quiz: Quiz }) {
 }
 
 export function WrongAnswerCard(
-    { user_answer, created_at, quiz }: {
-        user_answer: number;
-        created_at: Date;
-        quiz: Quiz;
-    },
+    { attempt, quiz }: { attempt: QuizAttempt; quiz: Quiz },
 ) {
     const optionLabels = ["A", "B", "C", "D"];
     return (
@@ -180,7 +175,7 @@ export function WrongAnswerCard(
                 </div>
                 <span class="text-sm text-gray-500">
                     {formatDate(
-                        created_at,
+                        attempt.created_at,
                     )}
                 </span>
             </div>
@@ -208,7 +203,7 @@ export function WrongAnswerCard(
                                     quiz
                                         .answer;
                                 const isYourAnswer = index ===
-                                    user_answer;
+                                    attempt.your_answer;
 
                                 return (
                                     <div
