@@ -24,32 +24,6 @@ export default function NavBar({ currentPath = "/" }: NavBarProps) {
             icon: "📚",
             description: "Wrong Answers",
         },
-        { href: "/lessons", label: "课程", icon: "📖", description: "Lessons" },
-        {
-            href: "/vocabulary",
-            label: "词汇",
-            icon: "💭",
-            description: "Vocabulary",
-        },
-        { href: "/grammar", label: "语法", icon: "✍️", description: "Grammar" },
-        {
-            href: "/practice",
-            label: "练习",
-            icon: "🎯",
-            description: "Practice",
-        },
-        {
-            href: "/progress",
-            label: "进度",
-            icon: "📊",
-            description: "Progress",
-        },
-        {
-            href: "/settings",
-            label: "设置",
-            icon: "⚙️",
-            description: "Settings",
-        },
     ];
 
     return (
@@ -63,9 +37,10 @@ export default function NavBar({ currentPath = "/" }: NavBarProps) {
                             class="flex items-center gap-2.5"
                             onClick={closeMenu}
                         >
-                            <div class="w-9 h-9 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
-                                <span class="text-xl">🇯🇵</span>
-                            </div>
+                            <img
+                                class="w-12 h-12 rounded-xl"
+                                src="icons/icon-256x256.png"
+                            />
                             <span class="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                                 外语邪修
                             </span>

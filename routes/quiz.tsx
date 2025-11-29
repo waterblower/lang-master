@@ -1,7 +1,7 @@
 import { Head } from "fresh/runtime";
 import { define } from "../utils.ts";
 import { getRandomQuestions } from "../utils/quizData.ts";
-import QuizGame from "../islands/QuizGame.tsx";
+
 import NavBar from "../islands/NavBar.tsx";
 
 export default define.page(async function QuizPage() {
@@ -61,7 +61,6 @@ export default define.page(async function QuizPage() {
                     style="min-height: 0;"
                 >
                     <div class="h-full flex flex-col px-3 py-3 pb-safe">
-                        <QuizGame questions={quizQuestions} />
                     </div>
                 </div>
             </div>
