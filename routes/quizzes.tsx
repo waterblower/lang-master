@@ -2,7 +2,7 @@ import { Head } from "fresh/runtime";
 import { define } from "../utils.ts";
 import NavBar from "../islands/NavBar.tsx";
 import { get_random_quiz } from "../api/root.tsx";
-import { QuizCard } from "../components/QuizCard.tsx";
+import { QuizCard } from "../islands/QuizCard.tsx";
 import { ErrorView } from "../components/ErrorView.tsx";
 
 export default define.page(async function QuizzesPage() {
@@ -69,7 +69,10 @@ export default define.page(async function QuizzesPage() {
                             : (
                                 <div class="space-y-4">
                                     {quizzes.map((quiz) => (
-                                        <QuizCard key={quiz.id} quiz={quiz} />
+                                        <QuizCard
+                                            key={quiz.id}
+                                            quiz={quiz}
+                                        />
                                     ))}
                                 </div>
                             )}
