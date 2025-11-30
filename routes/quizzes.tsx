@@ -8,7 +8,7 @@ import { ErrorView } from "../components/ErrorView.tsx";
 export default define.page(async function QuizzesPage() {
     // Parse and transform quizzes using QuizDbSchema
     const quizzes = await get_random_quiz({
-        total: 0,
+        total: 8,
         include_failed_attempts: 2,
     });
     if (quizzes instanceof Error) {
@@ -39,7 +39,10 @@ export default define.page(async function QuizzesPage() {
                     class="flex-1 overflow-y-auto"
                     style="-webkit-overflow-scrolling: touch; position: relative;"
                 >
-                    <div class="max-w-4xl mx-auto px-4 py-6 pb-safe">
+                    <div
+                        class="max-w-4xl mx-auto px-4 py-6"
+                        style="padding-bottom: calc(6rem + env(safe-area-inset-bottom));"
+                    >
                         {/* Header */}
                         <div class="mb-6">
                             <h1 class="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
