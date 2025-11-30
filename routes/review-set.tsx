@@ -45,7 +45,7 @@ export default define.page(async function WrongAnswersPage() {
                             <p class="text-gray-600">
                                 共{" "}
                                 <span class="font-semibold text-purple-600">
-                                    {attempts.length}
+                                    {failed_quizzes.size}
                                 </span>{" "}
                                 道错题
                             </p>
