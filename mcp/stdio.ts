@@ -3,7 +3,7 @@ import {
     ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { QuizAttemptSchema } from "../utils/quizData.ts";
+import { QuizAttemptSchema } from "../api/types.ts";
 import { record_quiz_attempt } from "../api/root.tsx";
 
 // Create an MCP server

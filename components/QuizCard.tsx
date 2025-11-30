@@ -1,4 +1,4 @@
-import type { Quiz, QuizAttempt } from "../utils/quizData.ts";
+import { Quiz, QuizAttempt } from "../api/types.ts";
 
 export interface QuizCardProps {
     quiz: Quiz;

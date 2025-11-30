@@ -1,5 +1,5 @@
 import { useSignal } from "@preact/signals";
-import type { Quiz, QuizAttempt } from "../utils/quizData.ts";
+import type { Quiz, QuizAttempt } from "../api/types.ts";
 import {
     CorrectAnswerCard,
     QuizCardNormal,

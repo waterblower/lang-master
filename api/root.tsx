@@ -5,7 +5,7 @@ import {
     QuizAttemptSchema,
     QuizDatabaseSchema,
     QuizSchema,
-} from "../utils/quizData.ts";
+} from "../api/types.ts";
 
 export const handler = define.handlers({
     GET(ctx) {
