@@ -6,7 +6,7 @@ import { WrongAnswerCard } from "../components/QuizCard.tsx";
 import { ErrorView } from "../components/ErrorView.tsx";
 
 export default define.page(async function WrongAnswersPage() {
-    const attempts = await list_quiz_attempts({});
+    const attempts = await list_quiz_attempts({ user_is_correct: false });
     if (attempts instanceof Error) {
         return ErrorView(attempts);
     }

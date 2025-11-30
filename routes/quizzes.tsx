@@ -7,7 +7,7 @@ import { ErrorView } from "../components/ErrorView.tsx";
 
 export default define.page(async function QuizzesPage() {
     // Parse and transform quizzes using QuizDbSchema
-    const quizzes = await get_random_quiz(10);
+    const quizzes = await get_random_quiz({ count: 8 });
     if (quizzes instanceof Error) {
         return ErrorView(quizzes);
     }

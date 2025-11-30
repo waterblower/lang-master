@@ -139,6 +139,9 @@ function CardHeader({ quiz }: { quiz: Quiz }) {
                     </span>
                 )}
             </div>
+            <span class="text-xs text-gray-500 font-mono">
+                {quiz.id}
+            </span>
         </div>
     );
 }

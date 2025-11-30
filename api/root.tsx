@@ -46,11 +46,12 @@ export const appRouter = router({
     get_quizes: publicProcedure
         .input(z.object({
             count: z.number().min(0).max(100),
+            include_passed_quiz: z.boolean().optional().default(true),
         }))
         .query(async (args) => {
-            return get_random_quiz(args.input.count);
+            return get_random_quiz(args.input);
         }),
-    record_wrong_answer: publicProcedure
+    record_attempt: publicProcedure
         .input(QuizAttemptSchema)
         .mutation(async ({ input }) => {
             await record_quiz_attempt(input);
@@ -76,7 +77,7 @@ export async function record_quiz_attempt(input: QuizAttempt) {
 }
 
 export async function list_quiz_attempts(
-    input: { offset?: number; limit?: number },
+    input: { offset?: number; limit?: number; user_is_correct?: boolean },
 ): Promise<(QuizAttempt & { quiz: Quiz })[] | Error> {
     const result = await db.execute(
         `SELECT
@@ -92,8 +93,14 @@ export async function list_quiz_attempts(
             q.answer as quiz_answer,
             q.explanation as quiz_explanation
          FROM quiz_attempts qa
-         JOIN quizzes q ON qa.quiz_id = q.id
-         ORDER BY qa.created_at DESC
+         JOIN quizzes q ON qa.quiz_id = q.id` +
+            ` WHERE 1=1` +
+            (input.user_is_correct == true
+                ? ` AND qa.user_choice = q.answer`
+                : input.user_is_correct == false
+                ? ` AND qa.user_choice != q.answer`
+                : ``) +
+            ` ORDER BY qa.created_at DESC
          LIMIT :limit
          OFFSET :offset`,
         {
@@ -143,14 +150,33 @@ export async function save_quiz(input: Quiz) {
     );
 }
 
-export async function get_random_quiz(count: number): Promise<Quiz[] | Error> {
-    const result = await db.execute(
-        `SELECT *
-         FROM quizzes
-         ORDER BY RANDOM()
-         LIMIT ?`,
-        [count],
-    );
+export async function get_random_quiz(
+    input: { count: number; include_passed_quiz?: boolean },
+): Promise<Quiz[] | Error> {
+    const include_passed = input.include_passed_quiz ?? true;
+
+    let query: string;
+    if (include_passed) {
+        query = `SELECT *
+                 FROM quizzes
+                 ORDER BY RANDOM()
+                 LIMIT :count`;
+    } else {
+        query = `SELECT *
+                 FROM quizzes
+                 WHERE id NOT IN (
+                     SELECT DISTINCT qa.quiz_id
+                     FROM quiz_attempts qa
+                     JOIN quizzes q ON qa.quiz_id = q.id
+                     WHERE qa.user_choice = q.answer
+                 )
+                 ORDER BY RANDOM()
+                 LIMIT :count`;
+    }
+
+    const result = await db.execute(query, {
+        count: input.count,
+    });
 
     const quizzes = [];
     for (const row of result.rows) {

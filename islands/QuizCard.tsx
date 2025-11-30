@@ -22,15 +22,14 @@ export function QuizCard({ quiz }: { quiz: Quiz }) {
                         user_choice: index,
                         created_at: new Date(),
                     };
-                    if (index != quiz.answer) {
-                        await api.record_wrong_answer.mutate(
-                            {
-                                ...user_attempt.value,
-                                created_at: user_attempt.value.created_at
-                                    .toISOString(),
-                            },
-                        );
-                    }
+
+                    await api.record_attempt.mutate(
+                        {
+                            ...user_attempt.value,
+                            created_at: user_attempt.value.created_at
+                                .toISOString(),
+                        },
+                    );
                 }}
             />
         );
