@@ -1,5 +1,5 @@
 import { useSignal } from "@preact/signals";
-import type { Quiz } from "../utils/quizData.ts";
+import type { Quiz, QuizAttempt } from "../utils/quizData.ts";
 import {
     CorrectAnswerCard,
     QuizCardNormal,
@@ -9,33 +9,38 @@ import { api } from "../trpc-client.ts";
 import { ulid } from "@std/ulid";
 
 export function QuizCard({ quiz }: { quiz: Quiz }) {
-    const user_answer = useSignal<number | undefined>(undefined);
+    const user_attempt = useSignal<QuizAttempt | undefined>(undefined);
 
-    if (user_answer.value === undefined) {
+    if (user_attempt.value === undefined) {
         return (
             <QuizCardNormal
                 quiz={quiz}
                 onSelect={async (index) => {
-                    user_answer.value = index;
-                    if (user_answer.value != quiz.answer) {
-                        await api.record_wrong_answer.mutate({
-                            id: ulid(),
-                            quiz_id: quiz.id,
-                            your_answer: user_answer.value,
-                            created_at: new Date().toISOString(),
-                        });
+                    user_attempt.value = {
+                        id: ulid(),
+                        quiz_id: quiz.id,
+                        user_choice: index,
+                        created_at: new Date(),
+                    };
+                    if (index != quiz.answer) {
+                        await api.record_wrong_answer.mutate(
+                            {
+                                ...user_attempt.value,
+                                created_at: user_attempt.value.created_at
+                                    .toISOString(),
+                            },
+                        );
                     }
                 }}
             />
         );
-    } else if (user_answer.value == quiz.answer) {
+    } else if (user_attempt.value.user_choice == quiz.answer) {
         return <CorrectAnswerCard quiz={quiz} />;
     } else {
         return (
             <WrongAnswerCard
                 quiz={quiz}
-                user_answer={user_answer.value}
-                created_at={new Date()}
+                attempt={user_attempt.value}
             />
         );
     }

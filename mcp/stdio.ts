@@ -4,7 +4,7 @@ import {
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { QuizAttemptSchema } from "../utils/quizData.ts";
-import { record_wrong_answer } from "../api/root.tsx";
+import { record_quiz_attempt } from "../api/root.tsx";
 
 // Create an MCP server
 const server = new McpServer({
@@ -20,7 +20,7 @@ server.registerTool(
         inputSchema: QuizAttemptSchema,
     },
     async (input) => {
-        await record_wrong_answer(input);
+        await record_quiz_attempt(input);
         return {
             content: [{ type: "text", text: "done" }],
         };

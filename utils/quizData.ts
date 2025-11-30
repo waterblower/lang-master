@@ -4,8 +4,13 @@ import zod from "zod";
 export const QuizAttemptSchema = zod.object({
     id: zod.ulid(),
     quiz_id: zod.string(),
-    your_answer: zod.number().min(0),
+    user_choice: zod.number().min(0),
     created_at: zod.iso.datetime(),
+}).transform((d) => {
+    return {
+        ...d,
+        created_at: new Date(d.created_at),
+    };
 });
 
 export type QuizAttempt = zod.infer<typeof QuizAttemptSchema>;

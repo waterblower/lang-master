@@ -203,7 +203,7 @@ export function WrongAnswerCard(
                                     quiz
                                         .answer;
                                 const isYourAnswer = index ===
-                                    attempt.your_answer;
+                                    attempt.user_choice;
 
                                 return (
                                     <div
@@ -310,6 +310,7 @@ const getTypeColor = (type: string) => {
 };
 
 const formatDate = (date: Date) => {
+    console.log(typeof date);
     const now = new Date();
     const diffMs = now.getTime() - date.getTime();
     const diffMins = Math.floor(diffMs / 60000);

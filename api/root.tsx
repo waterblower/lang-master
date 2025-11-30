@@ -53,7 +53,7 @@ export const appRouter = router({
     record_wrong_answer: publicProcedure
         .input(QuizAttemptSchema)
         .mutation(async ({ input }) => {
-            await record_wrong_answer(input);
+            await record_quiz_attempt(input);
         }),
     save_quiz: publicProcedure
         .input(QuizSchema)
@@ -62,11 +62,63 @@ export const appRouter = router({
         }),
 });
 
-export async function record_wrong_answer(input: QuizAttempt) {
+export async function record_quiz_attempt(input: QuizAttempt) {
     await db.execute(
-        `INSERT INTO wrong_answers (id, quiz_id, your_answer, created_at) VALUES (:id, :quiz_id, :your_answer, :created_at)`,
+        `INSERT INTO quiz_attempts
+          (id, quiz_id, user_choice, created_at)
+        VALUES
+          (:id, :quiz_id, :user_choice, :created_at)`,
         input,
     );
+}
+
+export async function list_quiz_attempts(
+    input: { offset?: number; limit?: number },
+): Promise<(QuizAttempt & { quiz: Quiz })[] | Error> {
+    const result = await db.execute(
+        `SELECT
+            qa.id,
+            qa.quiz_id,
+            qa.user_choice,
+            qa.created_at,
+            q.id as quiz_id,
+            q.type as quiz_type,
+            q.level as quiz_level,
+            q.question as quiz_question,
+            q.options as quiz_options,
+            q.answer as quiz_answer,
+            q.explanation as quiz_explanation
+         FROM quiz_attempts qa
+         JOIN quizzes q ON qa.quiz_id = q.id
+         ORDER BY qa.created_at DESC
+         LIMIT :limit
+         OFFSET :offset`,
+        {
+            limit: input.limit ?? 10,
+            offset: input.offset ?? 0,
+        },
+    );
+
+    const attempts: (QuizAttempt & { quiz: Quiz })[] = [];
+    for (const row of result.rows) {
+        const attempt: QuizAttempt & { quiz: Quiz } = {
+            id: row.id as string,
+            quiz_id: row.quiz_id as string,
+            user_choice: row.user_choice as number,
+            created_at: new Date(row.created_at as string),
+            quiz: QuizSchema.parse({
+                id: row.quiz_id as string,
+                type: row.quiz_type as string,
+                level: row.quiz_level as string | undefined,
+                question: row.quiz_question as string,
+                options: JSON.parse(row.quiz_options as string),
+                answer: row.quiz_answer as number,
+                explanation: row.quiz_explanation as string,
+            }),
+        };
+        attempts.push(attempt);
+    }
+    return attempts;
 }
 
 export async function save_quiz(input: Quiz) {

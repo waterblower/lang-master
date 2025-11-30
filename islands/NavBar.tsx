@@ -19,7 +19,7 @@ export default function NavBar({ currentPath = "/" }: NavBarProps) {
         { href: "/", label: "首页", icon: "🏠", description: "Home" },
         { href: "/quizzes", label: "测验", icon: "📝", description: "Quiz" },
         {
-            href: "/wronganswers",
+            href: "/review-set",
             label: "错题集",
             icon: "📚",
             description: "Wrong Answers",

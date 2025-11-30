@@ -1,52 +1,15 @@
 import { Head } from "fresh/runtime";
 import { define } from "../utils.ts";
 import NavBar from "../islands/NavBar.tsx";
-import { db } from "../api/root.tsx";
+import { list_quiz_attempts } from "../api/root.tsx";
 import { WrongAnswerCard } from "../components/QuizCard.tsx";
+import { ErrorView } from "../components/ErrorView.tsx";
 
 export default define.page(async function WrongAnswersPage() {
-    const wrongAnswersResult = await db.execute(`
-        SELECT
-            wa.id,
-            wa.quiz_id,
-            wa.your_answer,
-            wa.created_at,
-            q.id as q_id,
-            q.type as q_type,
-            q.level as q_level,
-            q.question as q_question,
-            q.options as q_options,
-            q.answer as q_answer,
-            q.explanation as q_explanation
-        FROM wrong_answers wa
-        LEFT JOIN quizzes q ON wa.quiz_id = q.id
-        ORDER BY wa.created_at DESC
-        LIMIT 100
-    `);
-    console.log(wrongAnswersResult.rows);
-    const wrongAnswers = wrongAnswersResult.rows.map(
-        (row) => {
-            const quiz = row.q_id
-                ? {
-                    id: row.q_id as string,
-                    type: row.q_type as string,
-                    level: row.q_level as string | undefined,
-                    question: row.q_question as string,
-                    options: JSON.parse(row.q_options as string) as string[],
-                    answer: row.q_answer as number,
-                    explanation: row.q_explanation as string,
-                }
-                : null;
-
-            return {
-                id: row.id as string,
-                quiz_id: row.quiz_id as string,
-                your_answer: row.your_answer as number,
-                created_at: row.created_at as string,
-                quiz,
-            };
-        },
-    );
+    const attempts = await list_quiz_attempts({});
+    if (attempts instanceof Error) {
+        return ErrorView(attempts);
+    }
 
     return (
         <>
@@ -83,14 +46,14 @@ export default define.page(async function WrongAnswersPage() {
                             <p class="text-gray-600">
                                 共{" "}
                                 <span class="font-semibold text-purple-600">
-                                    {wrongAnswers.length}
+                                    {attempts.length}
                                 </span>{" "}
                                 道错题
                             </p>
                         </div>
 
                         {/* Wrong Answers List */}
-                        {wrongAnswers.length === 0
+                        {attempts.length === 0
                             ? (
                                 <div class="bg-white rounded-2xl shadow-md p-12 text-center">
                                     <div class="text-6xl mb-4">🎉</div>
@@ -101,7 +64,7 @@ export default define.page(async function WrongAnswersPage() {
                                         你还没有错题记录，继续保持！
                                     </p>
                                     <a
-                                        href="/quiz"
+                                        href="/quizzes"
                                         class="inline-block mt-6 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
                                     >
                                         开始测验
@@ -110,10 +73,10 @@ export default define.page(async function WrongAnswersPage() {
                             )
                             : (
                                 <div class="space-y-4">
-                                    {wrongAnswers.map((attempt) => (
+                                    {attempts.map((attempt) => (
                                         <WrongAnswerCard
                                             attempt={attempt}
-                                            quiz={quiz}
+                                            quiz={attempt.quiz}
                                         />
                                     ))}
                                 </div>
