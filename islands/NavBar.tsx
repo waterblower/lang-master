@@ -6,6 +6,8 @@ interface NavBarProps {
 
 export default function NavBar({ currentPath = "/" }: NavBarProps) {
     const isMenuOpen = useSignal(false);
+    const path = useSignal(currentPath);
+    console.log(currentPath);
 
     const toggleMenu = () => {
         isMenuOpen.value = !isMenuOpen.value;
@@ -58,6 +60,7 @@ export default function NavBar({ currentPath = "/" }: NavBarProps) {
                                                 ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md"
                                                 : "text-gray-700 hover:bg-purple-50 hover:text-purple-600"
                                         }`}
+                                        onClick={() => {}}
                                     >
                                         <span class="mr-1.5">{link.icon}</span>
                                         {link.label}

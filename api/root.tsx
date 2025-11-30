@@ -34,6 +34,7 @@ export const publicProcedure = t.procedure;
 import { createClient } from "@libsql/client";
 import { z } from "zod";
 import { record_quiz_attempt, save_quiz } from "./write.ts";
+import { get_unique_failed_attempted_quizzes } from "./read.ts";
 
 const db_url = Deno.env.get("db_url");
 if (!db_url) throw new Error("db_url not in env");
@@ -153,7 +154,6 @@ export async function get_random_quiz(
 
     const quizzes = [];
     for (const row of result.rows) {
-        console.log(row);
         const quiz = QuizDatabaseSchema.safeParse(row);
         if (!quiz.success) {
             return quiz.error;
@@ -162,15 +162,14 @@ export async function get_random_quiz(
     }
 
     if (input.include_failed_attempts && input.include_failed_attempts > 0) {
-        const attemtps = await get_quiz_attempts({
-            limit: input.include_failed_attempts,
-            user_is_correct: false,
+        const failed_quizzes = await get_unique_failed_attempted_quizzes({
+            count: input.include_failed_attempts,
         });
-        if (attemtps instanceof Error) {
-            return attemtps;
+        if (failed_quizzes instanceof Error) {
+            return failed_quizzes;
         }
-        for (const attempt of attemtps) {
-            quizzes.push(attempt.quiz);
+        for (const quiz of failed_quizzes) {
+            quizzes.push(quiz);
         }
     }
     return quizzes;

@@ -14,6 +14,7 @@ export default define.page(async function QuizzesPage() {
     if (quizzes instanceof Error) {
         return ErrorView(quizzes);
     }
+    console.log(quizzes.length);
 
     return (
         <>
