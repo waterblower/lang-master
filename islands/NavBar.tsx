@@ -30,7 +30,7 @@ export default function NavBar({ currentPath = "/" }: NavBarProps) {
 
     return (
         <>
-            <nav class="bg-white/95 backdrop-blur-md shadow-md flex-shrink-0 border-b border-purple-100 sticky top-0 z-50">
+            <nav class="bg-white/95 backdrop-blur-md shadow-md shrink-0 border-b border-purple-100 sticky top-0 z-50">
                 <div class="px-4">
                     <div class="flex justify-between items-center h-14">
                         {/* Logo */}
