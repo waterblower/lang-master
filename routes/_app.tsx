@@ -1,7 +1,8 @@
+import NavBar from "../islands/NavBar.tsx";
 import { define } from "../utils.ts";
 import { asset, Partial } from "fresh/runtime";
 
-export default define.page(function App({ Component }) {
+export default define.page(function App({ Component, route }) {
     return (
         <html lang="en">
             <head>
@@ -88,6 +89,8 @@ export default define.page(function App({ Component }) {
                 </style>
             </head>
             <body f-client-nav class="preload">
+                <NavBar currentPath={route || ""} />
+
                 <Partial name="body">
                     <Component />
                 </Partial>

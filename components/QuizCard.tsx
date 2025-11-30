@@ -1,3 +1,4 @@
+import { ComponentChildren } from "preact";
 import { Quiz, QuizAttempt } from "../api/types.ts";
 
 export interface QuizCardProps {
@@ -11,7 +12,7 @@ export function QuizCardNormal({ quiz, onSelect }: QuizCardProps) {
     return (
         <div class="bg-white rounded-2xl shadow-md overflow-hidden">
             {/* Card Header */}
-            <CardHeader quiz={quiz} />
+            <QuizCardHeader quiz={quiz} />
             {/* Card Body */}
             <div class="px-5 py-5">
                 {/* Question */}
@@ -62,7 +63,7 @@ export function CorrectAnswerCard({ quiz }: { quiz: Quiz }) {
 
     return (
         <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-            <CardHeader quiz={quiz} />
+            <QuizCardHeader quiz={quiz} />
 
             {/* Card Body */}
             <div class="px-5 py-5">
@@ -122,7 +123,7 @@ export function CorrectAnswerCard({ quiz }: { quiz: Quiz }) {
     );
 }
 
-function CardHeader({ quiz }: { quiz: Quiz }) {
+export function QuizCardHeader({ quiz }: { quiz: Quiz }) {
     return (
         <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -147,7 +148,11 @@ function CardHeader({ quiz }: { quiz: Quiz }) {
 }
 
 export function WrongAnswerCard(
-    { attempt, quiz }: { attempt: QuizAttempt; quiz: Quiz },
+    { attempt, quiz, children }: {
+        attempt: QuizAttempt;
+        quiz: Quiz;
+        children?: ComponentChildren;
+    },
 ) {
     const optionLabels = ["A", "B", "C", "D"];
     return (
@@ -267,6 +272,7 @@ export function WrongAnswerCard(
                 <Explanation
                     explanation={quiz.explanation}
                 />
+                {children}
             </div>
         </div>
     );

@@ -33,6 +33,7 @@ export const publicProcedure = t.procedure;
 
 import { createClient } from "@libsql/client";
 import { z } from "zod";
+import { record_quiz_attempt, save_quiz } from "./write.ts";
 
 const db_url = Deno.env.get("db_url");
 if (!db_url) throw new Error("db_url not in env");
@@ -45,7 +46,7 @@ export const db = createClient({
 export const appRouter = router({
     get_quizes: publicProcedure
         .input(z.object({
-            count: z.number().min(0).max(100),
+            total: z.number().min(0).max(100),
             include_passed_quiz: z.boolean().optional().default(true),
         }))
         .query(async (args) => {
@@ -63,20 +64,7 @@ export const appRouter = router({
         }),
 });
 
-export async function record_quiz_attempt(input: QuizAttempt) {
-    await db.execute(
-        `INSERT INTO quiz_attempts
-          (id, quiz_id, user_choice, created_at)
-        VALUES
-          (:id, :quiz_id, :user_choice, :created_at)`,
-        {
-            ...input,
-            created_at: input.created_at.toISOString(),
-        },
-    );
-}
-
-export async function list_quiz_attempts(
+export async function get_quiz_attempts(
     input: { offset?: number; limit?: number; user_is_correct?: boolean },
 ): Promise<(QuizAttempt & { quiz: Quiz })[] | Error> {
     const result = await db.execute(
@@ -131,27 +119,12 @@ export async function list_quiz_attempts(
     return attempts;
 }
 
-export async function save_quiz(input: Quiz) {
-    await db.execute(
-        `INSERT INTO quizzes (id, type, level, question, options, answer, explanation)
-         VALUES (:id, :type, :level, :question, :options, :answer, :explanation)
-         ON CONFLICT(id) DO UPDATE SET
-            type = :type,
-            level = :level,
-            question = :question,
-            options = :options,
-            answer = :answer,
-            explanation = :explanation`,
-        {
-            ...input,
-            options: JSON.stringify(input.options),
-            level: input.level ?? null,
-        },
-    );
-}
-
 export async function get_random_quiz(
-    input: { count: number; include_passed_quiz?: boolean },
+    input: {
+        total: number;
+        include_passed_quiz?: boolean;
+        include_failed_attempts?: number;
+    },
 ): Promise<Quiz[] | Error> {
     const include_passed = input.include_passed_quiz ?? true;
 
@@ -160,7 +133,7 @@ export async function get_random_quiz(
         query = `SELECT *
                  FROM quizzes
                  ORDER BY RANDOM()
-                 LIMIT :count`;
+                 LIMIT :total`;
     } else {
         query = `SELECT *
                  FROM quizzes
@@ -171,11 +144,11 @@ export async function get_random_quiz(
                      WHERE qa.user_choice = q.answer
                  )
                  ORDER BY RANDOM()
-                 LIMIT :count`;
+                 LIMIT :total`;
     }
 
     const result = await db.execute(query, {
-        count: input.count,
+        total: input.total,
     });
 
     const quizzes = [];
@@ -187,7 +160,37 @@ export async function get_random_quiz(
         }
         quizzes.push(quiz.data);
     }
+
+    if (input.include_failed_attempts && input.include_failed_attempts > 0) {
+        const attemtps = await get_quiz_attempts({
+            limit: input.include_failed_attempts,
+            user_is_correct: false,
+        });
+        if (attemtps instanceof Error) {
+            return attemtps;
+        }
+        for (const attempt of attemtps) {
+            quizzes.push(attempt.quiz);
+        }
+    }
     return quizzes;
 }
 
 export type tRPC_Router = typeof appRouter;
+
+export function group_attempts_by_quiz(
+    attempts: (QuizAttempt & { quiz: Quiz })[],
+) {
+    const failed_quizzes = new Map<
+        string,
+        { quiz: Quiz; attemtps: QuizAttempt[] }
+    >();
+    for (const attempt of attempts) {
+        const quizId = attempt.quiz.id;
+        if (!failed_quizzes.has(quizId)) {
+            failed_quizzes.set(quizId, { quiz: attempt.quiz, attemtps: [] });
+        }
+        failed_quizzes.get(quizId)!.attemtps.push(attempt);
+    }
+    return failed_quizzes;
+}

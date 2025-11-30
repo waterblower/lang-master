@@ -1,15 +1,17 @@
 import { Head } from "fresh/runtime";
 import { define } from "../utils.ts";
 import NavBar from "../islands/NavBar.tsx";
-import { list_quiz_attempts } from "../api/root.tsx";
+import { get_quiz_attempts, group_attempts_by_quiz } from "../api/root.tsx";
 import { WrongAnswerCard } from "../components/QuizCard.tsx";
 import { ErrorView } from "../components/ErrorView.tsx";
+import { ReviewCard } from "../components/ReviewCard.tsx";
 
 export default define.page(async function WrongAnswersPage() {
-    const attempts = await list_quiz_attempts({ user_is_correct: false });
+    const attempts = await get_quiz_attempts({ user_is_correct: false });
     if (attempts instanceof Error) {
         return ErrorView(attempts);
     }
+    const failed_quizzes = group_attempts_by_quiz(attempts);
 
     return (
         <>
@@ -29,9 +31,6 @@ export default define.page(async function WrongAnswersPage() {
                 class="min-h-screen w-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col"
                 style="padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); height: 100vh; max-height: -webkit-fill-available;"
             >
-                {/* Navigation Bar */}
-                <NavBar currentPath="/wronganswers" />
-
                 {/* Main Content */}
                 <div
                     class="flex-1 overflow-y-auto"
@@ -73,12 +72,16 @@ export default define.page(async function WrongAnswersPage() {
                             )
                             : (
                                 <div class="space-y-4">
-                                    {attempts.map((attempt) => (
-                                        <WrongAnswerCard
-                                            attempt={attempt}
-                                            quiz={attempt.quiz}
-                                        />
-                                    ))}
+                                    {Array.from(
+                                        failed_quizzes.values().map((
+                                            failure,
+                                        ) => (
+                                            <ReviewCard
+                                                attempts={failure.attemtps}
+                                                quiz={failure.quiz}
+                                            />
+                                        )),
+                                    )}
                                 </div>
                             )}
                     </div>

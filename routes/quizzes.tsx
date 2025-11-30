@@ -7,7 +7,10 @@ import { ErrorView } from "../components/ErrorView.tsx";
 
 export default define.page(async function QuizzesPage() {
     // Parse and transform quizzes using QuizDbSchema
-    const quizzes = await get_random_quiz({ count: 8 });
+    const quizzes = await get_random_quiz({
+        total: 0,
+        include_failed_attempts: 2,
+    });
     if (quizzes instanceof Error) {
         return ErrorView(quizzes);
     }
@@ -27,12 +30,9 @@ export default define.page(async function QuizzesPage() {
             </Head>
 
             <div
-                class="min-h-screen w-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col"
+                class="min-h-full w-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex flex-col"
                 style="padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); height: 100vh; max-height: -webkit-fill-available;"
             >
-                {/* Navigation Bar */}
-                <NavBar currentPath="/quizzes" />
-
                 {/* Main Content */}
                 <div
                     class="flex-1 overflow-y-auto"
