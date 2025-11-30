@@ -68,7 +68,10 @@ export async function record_quiz_attempt(input: QuizAttempt) {
           (id, quiz_id, user_choice, created_at)
         VALUES
           (:id, :quiz_id, :user_choice, :created_at)`,
-        input,
+        {
+            ...input,
+            created_at: input.created_at.toISOString(),
+        },
     );
 }
 
@@ -94,7 +97,7 @@ export async function list_quiz_attempts(
          LIMIT :limit
          OFFSET :offset`,
         {
-            limit: input.limit ?? 10,
+            limit: input.limit ?? 100,
             offset: input.offset ?? 0,
         },
     );
