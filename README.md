@@ -11,14 +11,23 @@ covering vocabulary, grammar, kanji, and reading comprehension.
 
 ## ✨ Features
 
+### 🈷️ Kana Practice Module (NEW!)
+
+- **Interactive Hiragana & Katakana Learning** - Master the foundation of Japanese
+- **3 Practice Modes**: Chart View, Recognition Quiz, and Typing Practice
+- **71 Kana Characters** - Seion (清音), Dakuon (浊音), and Handakuon (半浊音)
+- **Smart Question Generation** - Randomized questions with scientific distractors
+- **Real-time Score Tracking** - Monitor your progress as you learn
+- **Mobile-Friendly** - Practice anywhere, anytime
+
 ### 🎯 Interactive Quiz System
 
-- **30+ N5 Level Questions** covering all essential topics
+- **100+ N5 Level Questions** covering all essential topics
 - **4 Question Types**: Vocabulary, Grammar, Kanji, and Reading Comprehension
-- **Random Question Selection** - Get 10 different questions each time
+- **Smart Question Selection** - Includes failed attempts for review
 - **Real-time Feedback** - Instant answer validation with detailed explanations
-- **Progress Tracking** - Visual progress bar and score tracking
-- **Pass/Fail Criteria** - 70% pass mark (7/10 questions)
+- **Progress Tracking** - Track your attempts and improvement over time
+- **Wrong Answer Review** - Focus on questions you got wrong
 
 ### 🎨 Beautiful Modern UI
 
@@ -71,28 +80,86 @@ deno task start
 
 ```
 lang-master/
+├── _data/
+│   ├── kana.ts                 # Kana data (hiragana, katakana, romaji)
+│   └── quiz.json               # Quiz questions database (100+ questions)
+├── api/
+│   ├── types.ts                # TypeScript type definitions
+│   ├── root.tsx                # tRPC router and API handlers
+│   ├── read.ts                 # Database read operations
+│   └── write.ts                # Database write operations
 ├── assets/
 │   └── styles.css              # Global styles with animations & utilities
 ├── components/
-│   └── Button.tsx              # Reusable button component
+│   ├── Button.tsx              # Reusable button component
+│   ├── KanaChart.tsx           # Kana chart display component
+│   ├── QuizCard.tsx            # Quiz card components
+│   └── ErrorView.tsx           # Error display component
 ├── islands/
 │   ├── Counter.tsx             # Example counter island
-│   └── QuizGame.tsx            # Interactive quiz game (Signals-based)
+│   ├── KanaPractice.tsx        # Interactive kana practice (NEW!)
+│   ├── NavBar.tsx              # Navigation bar with mobile menu
+│   └── QuizCard.tsx            # Interactive quiz card
 ├── routes/
 │   ├── _app.tsx                # Root app layout with meta tags
 │   ├── index.tsx               # Beautiful home page
-│   └── quiz.tsx                # Quiz page with SSR
+│   ├── kana.tsx                # Kana practice page (NEW!)
+│   ├── quizzes.tsx             # Quiz page with random questions
+│   ├── intro.tsx               # Introduction page
+│   └── review-set.tsx          # Wrong answer review page
 ├── static/
 │   ├── favicon.ico             # Site favicon
-│   └── logo.svg                # Logo
-├── utils/
-│   └── quizData.ts             # Quiz questions database
+│   └── icons/                  # PWA icons
+├── 学习/
+│   └── 五十音图练习说明.md      # Kana practice guide (Chinese)
 ├── client.ts                   # Client entry point
 ├── deno.json                   # Deno configuration
 ├── main.ts                     # Server entry point
 ├── utils.ts                    # Shared utilities
 └── vite.config.ts              # Vite configuration
 ```
+
+## 🈷️ Kana Practice System
+
+### Practice Modes
+
+#### 📊 Chart View
+Browse the complete kana chart organized by rows (あ行, か行, etc.):
+- View all hiragana or katakana characters
+- See romaji readings for each character
+- Grouped by traditional gojūon table structure
+- Interactive hover effects for better learning
+
+#### 📝 Recognition Practice
+Multiple-choice quiz to test your kana recognition:
+- **Kana → Romaji**: See the kana, choose the correct romaji
+- **Romaji → Kana**: See the romaji, choose the correct kana
+- 4 options per question with instant feedback
+- Score tracking and accuracy monitoring
+
+#### ⌨️ Typing Practice
+Type the romaji for displayed kana characters:
+- Trains muscle memory for typing Japanese
+- More challenging than multiple choice
+- Supports Enter key for quick submission
+- Perfect for preparing to use IME (Input Method Editor)
+
+### Learning Path
+
+**Week 1-2: Hiragana (46 characters)**
+- Start with basic seion (clear sounds)
+- Practice 2-3 rows per day
+- Aim for 70%+ accuracy
+
+**Week 3-4: Katakana (46 characters)**
+- Learn using same method as hiragana
+- Faster learning due to familiar sounds
+- Focus on distinguishing similar shapes
+
+**Week 5+: Dakuon & Handakuon (25 characters)**
+- Learn voiced and semi-voiced sounds
+- Practice mixed hiragana and katakana
+- Achieve 95%+ accuracy and fast recognition
 
 ## 🎓 Quiz System Details
 
@@ -254,18 +321,29 @@ const progress = useComputed(
 
 ## 🎯 Future Enhancements
 
-### Planned Features
+### Kana Practice Enhancements
+- [ ] Audio pronunciation for each kana
+- [ ] Handwriting recognition using canvas
+- [ ] Stroke order animation
+- [ ] Spaced Repetition System (SRS)
+- [ ] Memory curve tracking
+- [ ] Achievement badges
+- [ ] Daily check-in system
+- [ ] Study time statistics
+- [ ] Yōon practice (きゃ, しゃ, etc.)
 
+### Quiz System Enhancements
 - [ ] User authentication and profiles
 - [ ] Score history and statistics
 - [ ] Leaderboard system
 - [ ] N4, N3, N2, N1 level support
 - [ ] Timed quiz mode
-- [ ] Audio pronunciation
-- [ ] Hiragana/Katakana practice
+- [ ] Audio pronunciation for vocabulary
 - [ ] Flashcard study mode
 - [ ] PDF export of results
 - [ ] Dark mode support
+- [ ] Grammar reference guide
+- [ ] Custom word lists
 
 ### Potential Improvements
 
@@ -308,4 +386,22 @@ For questions or issues, please open an issue on GitHub.
 
 **Built with ❤️ using Fresh, Preact Signals, and TypeScript**
 
-**がんばって！(Good luck!)**
+## 🆕 Latest Updates
+
+### v2.0.0 - Kana Practice Module
+- ✅ Complete hiragana and katakana practice system
+- ✅ 3 interactive practice modes
+- ✅ 71 kana characters with romaji
+- ✅ Real-time score tracking
+- ✅ Mobile-responsive design
+- ✅ Integrated into navigation menu
+
+### v1.0.0 - Quiz System
+- ✅ 100+ N5 level questions
+- ✅ Database-backed quiz attempts
+- ✅ Wrong answer review system
+- ✅ Beautiful gradient UI
+
+---
+
+**がんばって！(Good luck!) / 加油！**

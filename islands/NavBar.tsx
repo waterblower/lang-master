@@ -19,6 +19,12 @@ export default function NavBar({ currentPath = "/" }: NavBarProps) {
 
     const navLinks = [
         { href: "/", label: "首页", icon: "🏠", description: "Home" },
+        {
+            href: "/kana",
+            label: "五十音",
+            icon: "🈷️",
+            description: "Kana Practice",
+        },
         { href: "/quizzes", label: "测验", icon: "📝", description: "Quiz" },
         {
             href: "/review-set",
