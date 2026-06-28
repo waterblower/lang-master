@@ -32,6 +32,12 @@ export default function NavBar({ currentPath = "/" }: NavBarProps) {
             icon: "📚",
             description: "Wrong Answers",
         },
+        {
+            href: "/tinder",
+            label: "滑动卡片",
+            icon: "💝",
+            description: "Tinder Cards",
+        },
     ];
 
     return (
